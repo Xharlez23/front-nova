@@ -1,0 +1,8 @@
+<header class="top"><div class="in">
+  <a routerLink="/" class="logo">⚡ NOVA</a><span class="sp"></span>
+  @if (auth.isAdmin()) {<a routerLink="/admin">Panel admin</a>}
+  <a routerLink="/carrito">🛒 Carrito ({{ cart.count() }})</a>
+  @if (auth.user(); as u) {
+    <span class="count">{{ u.name }}</span><a href="#" (click)="logout($event)">Salir</a>
+  } @else {<a routerLink="/login">Ingresar</a>}
+</div></header>
