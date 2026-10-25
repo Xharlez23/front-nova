@@ -3,6 +3,7 @@ import { adminGuard, authGuard } from './core/guards';
 
 export const routes: Routes = [
   { path: '', loadComponent: () => import('./pages/catalog/catalog.component').then(m => m.CatalogComponent) },
+  { path: 'producto/:id', loadComponent: () => import('./pages/product-detail/product-detail.component').then(m => m.ProductDetailComponent) },
   { path: 'login', loadComponent: () => import('./pages/login/login.component').then(m => m.LoginComponent) },
   { path: 'carrito', canActivate: [authGuard], loadComponent: () => import('./pages/cart/cart.component').then(m => m.CartComponent) },
   {

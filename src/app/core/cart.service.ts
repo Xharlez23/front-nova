@@ -7,7 +7,12 @@ import { readJson, writeJson } from './storage';
 export class CartService {
   readonly lines = signal<CartLine[]>(readJson<CartLine[]>('cart_v3') || []);
   readonly count = computed(() => this.lines().reduce((a, l) => a + l.qty, 0));
-
+  addQty(id: number, qty: number, stock: number) {
+    const cur = this.lines().find(l => l.id === id)?.qty ?? 0;
+    const next = Math.min(cur + qty, stock);
+    if (next < 1) return;
+    this.save(cur ? this.lines().map(l => l.id === id ? { ...l, qty: next } : l) : [...this.lines(), { id, qty: next }]);
+  }
   add(id: number, stock: number) {
     const list = this.lines().map(l => ({ ...l }));
     const line = list.find(l => l.id === id);

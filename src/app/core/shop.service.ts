@@ -7,6 +7,7 @@ import { CartLine, CheckoutForm, Order, Product } from '../shared/models';
 export class ShopService {
   private http = inject(HttpClient);
   products() { return this.http.get<Product[]>(`${API}/products`); }
+  product(id: number) { return this.http.get<Product>(`${API}/products/${id}`); }
   checkout(form: CheckoutForm, lines: CartLine[]) {
     return this.http.post<{ orderId: number }>(`${API}/orders`, { ...form, items: lines.map(l => ({ productId: l.id, qty: l.qty })) });
   }
