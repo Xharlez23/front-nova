@@ -1,0 +1,10 @@
+<div class="item">
+  <app-product-image [src]="product.image" [alt]="product.name" />
+  <div>
+    <b>{{ product.name }}</b><div class="count">{{ product.price | cop }} c/u</div>
+    <div class="qty">
+      <button (click)="qtyChange.emit(qty - 1)">−</button>{{ qty }}<button (click)="qtyChange.emit(qty + 1)">+</button>
+    </div>
+  </div>
+  <div><b>{{ product.price * qty | cop }}</b><br><button class="danger small" (click)="remove.emit()">Quitar</button></div>
+</div>

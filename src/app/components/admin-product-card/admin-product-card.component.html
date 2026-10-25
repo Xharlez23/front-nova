@@ -1,0 +1,17 @@
+<div class="card">
+  <app-product-image [src]="product.image" [alt]="product.name" />
+  <div class="pc">
+    <b>{{ product.name }}</b>
+    <app-status-badge [value]="product.eval_status ?? 'pendiente'" />
+    <small>👍 {{ product.approvals ?? 0 }} · 👎 {{ product.rejections ?? 0 }}</small>
+    <small>Costo {{ product.cost | cop }} · Venta {{ product.price | cop }}</small>
+    <div class="row">Stock
+      <input #s type="number" min="0" [value]="product.stock" (change)="update.emit({ stock: +s.value || 0 })">
+    </div>
+    <label><input #a type="checkbox" [checked]="product.active" (change)="update.emit({ active: a.checked })"> Visible</label>
+    <div class="row">
+      <button class="secondary small" (click)="edit.emit(product)">Editar</button>
+      <button class="danger small" (click)="remove.emit(product)">Borrar</button>
+    </div>
+  </div>
+</div>

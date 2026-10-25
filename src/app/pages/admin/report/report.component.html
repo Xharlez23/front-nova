@@ -1,1 +1,32 @@
-<p>report works!</p>
+@if (rep; as r) {
+  <div class="panel">
+    <h2>Informe</h2>
+    <div class="sum">
+      <app-stat-card label="Ventas" [value]="r.totals.revenue | cop" />
+      <app-stat-card label="Utilidad" [value]="r.totals.profit | cop" />
+      <app-stat-card label="Pedidos" [value]="r.totals.orders" />
+      <app-stat-card label="Aprobados" [value]="ev('aprobado')" tone="ok" />
+      <app-stat-card label="Rechazados" [value]="ev('rechazado')" tone="err" />
+      <app-stat-card label="Pendientes" [value]="ev('pendiente')" />
+    </div>
+    <div class="row" style="border:0">
+      <button class="primary" (click)="csv('sales')">Exportar ventas (CSV)</button>
+      <button class="secondary" (click)="csv('shopping')">Lista de compra: aprobados (CSV)</button>
+      <button class="secondary" (click)="print()">Imprimir / PDF</button>
+    </div>
+    <div class="cols2">
+      <div>
+        <h3>Más vendidos</h3>
+        @for (t of r.top; track t.name) {<div class="row"><span>{{ t.name }}</span><span>{{ t.units }} uds · {{ t.revenue | cop }}</span></div>}
+        @empty {<p class="count">Sin ventas aún.</p>}
+        <h3>Ventas por día</h3>
+        @for (d of r.byDay; track d.day) {<div class="row"><span>{{ d.day }}</span><b>{{ d.revenue | cop }}</b></div>}
+      </div>
+      <div>
+        <h3>Stock bajo (5 o menos)</h3>
+        @for (s of r.lowStock; track s.id) {<div class="row"><span>{{ s.name }}</span><b class="err">{{ s.stock }}</b></div>}
+        @empty {<p class="count">Todo en orden.</p>}
+      </div>
+    </div>
+  </div>
+} @else {<div class="panel"><p class="count">Cargando informe…</p></div>}

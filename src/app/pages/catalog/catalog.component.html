@@ -1,1 +1,16 @@
-<p>catalog works!</p>
+<div class="bar">
+  <input placeholder="Buscar gadgets, accesorios…" [(ngModel)]="q">
+  <select [(ngModel)]="sort">
+    <option value="new">Más recientes</option>
+    <option value="lo">Precio: menor a mayor</option>
+    <option value="hi">Precio: mayor a menor</option>
+  </select>
+</div>
+<div class="chips" style="margin-bottom:10px">
+  @for (c of categories; track c) {<button class="chip" [class.on]="c === cat" (click)="cat = c">{{ c }}</button>}
+</div>
+@if (error) {<p class="err">{{ error }}</p>} @else if (loading) {<p class="count">Cargando…</p>} @else {<p class="count">{{ list.length }} productos</p>}
+<div class="grid">
+  @for (p of list; track p.id) {<app-product-card [product]="p" (add)="add($event)" />}
+  @empty { @if (!loading && !error) {<div class="empty">No hay productos para mostrar.</div>} }
+</div>

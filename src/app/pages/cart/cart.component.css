@@ -1,0 +1,2 @@
+.status.pagado, .status.enviado, .status.entregado { background: #e1f6e8; color: #126b3b; }
+.status.cancelado { background: #ffe7e7; color: #a51f2a; }

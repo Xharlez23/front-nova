@@ -1,1 +1,15 @@
-<p>presentation works!</p>
+<div class="panel">
+  @if (cur; as p) {
+    <div class="present">
+      <div class="hero">@if (p.image) {<img [src]="p.image" [alt]="p.name">} @else {<b>IMAGEN</b>}</div>
+      <app-vote-panel [product]="p" [needed]="needed" (vote)="vote($event)" />
+    </div>
+  } @else {<div class="empty">Agrega productos en la pestaña Productos para empezar.</div>}
+  <div class="foot">
+    <b>Votaste {{ myVotes }} de {{ items.length }} · Decididos: {{ decided }}</b>
+    <div class="track"><div class="fill" [style.width.%]="items.length ? myVotes * 100 / items.length : 0"></div></div>
+    <button class="secondary" (click)="go(-1)">← Anterior</button>
+    <button class="secondary" (click)="go(1)">Siguiente →</button>
+    <button class="secondary" (click)="full()">⛶ Pantalla completa</button>
+  </div>
+</div>

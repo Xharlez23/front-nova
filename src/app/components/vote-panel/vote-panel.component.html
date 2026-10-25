@@ -1,0 +1,22 @@
+<div class="info">
+  <div class="box name">{{ product.name }}</div>
+  <div class="two">
+    <div class="box"><span>Valor costo</span><strong>{{ product.cost | cop }}</strong></div>
+    <div class="box"><span>Valor venta</span><strong>{{ product.price | cop }}</strong></div>
+  </div>
+  @if (product.source_url) {<a [href]="product.source_url" target="_blank" rel="noopener" style="text-align:center">Ver producto original ↗</a>}
+  <p class="vt">¿LO COMPRAMOS?</p>
+  <div class="two">
+    <button class="vote no" [style.box-shadow]="product.my_vote === 'rechazado' ? '0 0 0 6px #e52f3d44' : 'none'" (click)="vote.emit('rechazado')" title="Rechazar">👎</button>
+    <button class="vote yes" [style.box-shadow]="product.my_vote === 'aprobado' ? '0 0 0 6px #19a65344' : 'none'" (click)="vote.emit('aprobado')" title="Aprobar">👍</button>
+  </div>
+  <div class="two">
+    <div class="box"><span>👎 Rechazos</span><strong>{{ product.rejections ?? 0 }}</strong></div>
+    <div class="box"><span>👍 Aprobados</span><strong>{{ product.approvals ?? 0 }}</strong></div>
+  </div>
+  <p class="sub" style="text-align:center;margin:0">
+    Se necesitan {{ needed }} votos iguales para decidir.
+    @if (product.my_vote) {Tu voto: <b>{{ product.my_vote }}</b>.} @else {Aún no has votado.}
+  </p>
+  <app-status-badge [value]="product.eval_status ?? 'pendiente'" />
+</div>

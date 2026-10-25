@@ -1,11 +1,41 @@
-import { Component } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { CartItemComponent } from '../../components/cart-item/cart-item.component';
+import { CheckoutFormComponent } from '../../components/checkout-form/checkout-form.component';
+import { StatusBadgeComponent } from '../../components/status-badge/status-badge.component';
+import { AuthService } from '../../core/auth.service';
+import { CartService } from '../../core/cart.service';
+import { ShopService } from '../../core/shop.service';
+import { CopPipe } from '../../shared/cop.pipe';
+import { Product, Order, CheckoutForm } from '../../shared/models';
 
 @Component({
   selector: 'app-cart',
-  imports: [],
+  imports: [CopPipe, CartItemComponent, CheckoutFormComponent, StatusBadgeComponent],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.css'
 })
-export class CartComponent {
+export class CartComponent implements OnInit {
+  cart = inject(CartService);
+  private shop = inject(ShopService);
+  userName = inject(AuthService).user()?.name ?? '';
+  products = signal<Product[]>([]);
+  items = computed(() => this.cart.lines().flatMap(l => {
+    const p = this.products().find(x => x.id === l.id);
+    return p ? [{ p, qty: l.qty }] : [];
+  }));
+  total = computed(() => this.items().reduce((a, i) => a + i.p.price * i.qty, 0));
+  orders: Order[] = []; msg = ''; bad = false; busy = false;
 
+  ngOnInit() {
+    this.shop.products().subscribe(p => { this.products.set(p); this.cart.prune(p.map(x => x.id)); });
+    this.loadOrders();
+  }
+  loadOrders() { this.shop.myOrders().subscribe(o => this.orders = o); }
+  buy(form: CheckoutForm) {
+    this.busy = true;
+    this.shop.checkout(form, this.cart.lines()).subscribe({
+      next: r => { this.msg = `¡Pedido #${r.orderId} recibido! Te contactaremos para coordinar pago y entrega.`; this.bad = false; this.busy = false; this.cart.clear(); this.loadOrders(); },
+      error: e => { this.msg = e.error?.error || 'Error al crear el pedido'; this.bad = true; this.busy = false; },
+    });
+  }
 }

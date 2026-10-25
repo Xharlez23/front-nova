@@ -1,1 +1,18 @@
-<p>products works!</p>
+<div class="cols">
+  <app-product-form [product]="editing" [busy]="busy" [msg]="msg"
+    (save)="onSave($event)" (bulk)="onBulk($event)" (cancelled)="editing = null" />
+  <div class="panel">
+    <div class="bar">
+      <div><h2>Productos</h2><span class="count">{{ shown.length }} productos</span></div>
+      <select [(ngModel)]="filter">
+        <option value="all">Todos</option><option value="pendiente">Pendientes</option>
+        <option value="aprobado">Aprobados</option><option value="rechazado">Rechazados</option>
+      </select>
+    </div>
+    <div class="grid">
+      @for (p of shown; track p.id) {
+        <app-admin-product-card [product]="p" (edit)="edit($event)" (remove)="remove($event)" (update)="update(p, $event)" />
+      } @empty {<div class="empty">Todavía no hay productos.</div>}
+    </div>
+  </div>
+</div>

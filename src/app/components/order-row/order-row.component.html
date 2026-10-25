@@ -1,0 +1,10 @@
+<div class="row">
+  <span>
+    <b>#{{ order.id }}</b> {{ order.customer }} · {{ order.phone }} · {{ order.city }}<br>
+    <small>{{ order.address }} — @for (i of order.items; track $index) { <span>{{ i.qty }}× {{ i.name }}; </span> }</small>
+  </span>
+  <b>{{ order.total | cop }}</b>
+  <select [ngModel]="order.status" (ngModelChange)="statusChange.emit($event)">
+    @for (s of statuses; track s) {<option [value]="s">{{ s }}</option>}
+  </select>
+</div>

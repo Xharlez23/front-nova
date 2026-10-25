@@ -1,0 +1,27 @@
+<div class="panel">
+  <h2>{{ f.id ? 'Editar producto' : 'Agregar producto' }}</h2>
+  <p class="sub">Solo los datos necesarios para decidir y vender.</p>
+  <div class="field"><label>Nombre *</label><input [(ngModel)]="f.name"></div>
+  <div class="field"><label>Categoría</label><input [(ngModel)]="f.category" placeholder="Audio, Cargadores…"></div>
+  <div class="two">
+    <div class="field"><label>Costo (COP)</label><input type="number" [(ngModel)]="f.cost"></div>
+    <div class="field"><label>Venta (COP) *</label><input type="number" [(ngModel)]="f.price"></div>
+  </div>
+  <div class="field"><label>Stock</label><input type="number" [(ngModel)]="f.stock"></div>
+  <div class="field"><label>URL del producto (proveedor)</label><input [(ngModel)]="f.source_url" placeholder="https://…"></div>
+  <div class="field"><label>Descripción</label><textarea rows="2" [(ngModel)]="f.description"></textarea></div>
+  <div class="field"><label>Imagen principal</label>
+    <input type="file" accept="image/*" (change)="onFile($event)">
+    @if (f.image) {<img [src]="f.image" alt="" style="max-height:90px;object-fit:contain">}
+  </div>
+  <label><input type="checkbox" [(ngModel)]="f.active"> Visible en la tienda</label>
+  @if (err || msg) {<p class="err">{{ err || msg }}</p>}
+  <div class="row" style="border:0">
+    <button class="primary" [disabled]="busy" (click)="submit()">Guardar</button>
+    @if (f.id) {<button class="secondary" (click)="cancelled.emit()">Cancelar</button>}
+  </div>
+  <hr style="border:0;border-top:1px solid var(--line);margin:16px 0">
+  <h2>Carga masiva de imágenes</h2>
+  <p class="sub">Cada imagen crea un producto oculto para completar después.</p>
+  <input type="file" accept="image/*" multiple [disabled]="busy" (change)="onBulk($event)">
+</div>

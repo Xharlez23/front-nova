@@ -1,1 +1,10 @@
-<p>login works!</p>
+<div class="panel narrow">
+  <h2>{{ registering ? 'Crear cuenta' : 'Iniciar sesión' }}</h2>
+  <p class="sub">Necesitas una cuenta para finalizar tus compras.</p>
+  @if (registering) {<div class="field"><label>Nombre</label><input [(ngModel)]="f.name"></div>}
+  <div class="field"><label>Correo</label><input type="email" [(ngModel)]="f.email"></div>
+  <div class="field"><label>Contraseña</label><input type="password" [(ngModel)]="f.password"></div>
+  @if (err) {<p class="err">{{ err }}</p>}
+  <button class="primary" style="width:100%" [disabled]="busy" (click)="submit()">{{ registering ? 'Registrarme' : 'Entrar' }}</button>
+  <p><a href="#" (click)="registering = !registering; $event.preventDefault()">{{ registering ? 'Ya tengo cuenta' : 'Crear cuenta nueva' }}</a></p>
+</div>

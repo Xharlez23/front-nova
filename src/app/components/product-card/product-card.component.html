@@ -1,0 +1,11 @@
+<article class="card">
+  <app-product-image [src]="product.image" [alt]="product.name" />
+  <div class="cb">
+    <small>{{ product.category }}</small>
+    <h3>{{ product.name }}</h3>
+    <div class="price">{{ product.price | cop }}</div>
+    @if (product.stock < 1) {<span class="tag out">Agotado</span>}
+    @else if (product.stock <= 5) {<span class="tag low">Quedan {{ product.stock }}</span>}
+    <button class="primary small" [disabled]="product.stock < 1" (click)="add.emit(product)">Añadir al carrito</button>
+  </div>
+</article>

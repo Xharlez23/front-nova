@@ -1,1 +1,24 @@
-<p>cart works!</p>
+<div class="cols2">
+  <div class="panel">
+    <h2>Tu carrito</h2>
+    @for (i of items(); track i.p.id) {
+      <app-cart-item [product]="i.p" [qty]="i.qty"
+        (qtyChange)="cart.setQty(i.p.id, $event, i.p.stock)" (remove)="cart.remove(i.p.id)" />
+    } @empty {<p class="count">Tu carrito está vacío.</p>}
+    @if (items().length) {<div class="total"><span>Total</span><span>{{ total() | cop }}</span></div>}
+  </div>
+  @if (items().length) {
+    <app-checkout-form [initialName]="userName" [busy]="busy" [msg]="msg" [bad]="bad" (confirmed)="buy($event)" />
+  } @else if (msg) {<div class="panel"><p [class]="bad ? 'err' : 'ok'">{{ msg }}</p></div>}
+</div>
+
+<div class="panel">
+  <h2>Mis pedidos</h2>
+  @for (o of orders; track o.id) {
+    <div class="row">
+      <span>#{{ o.id }} · {{ o.created_at.slice(0, 10) }}</span>
+      <app-status-badge [value]="o.status" />
+      <b>{{ o.total | cop }}</b>
+    </div>
+  } @empty {<p class="count">Aún no tienes pedidos.</p>}
+</div>
