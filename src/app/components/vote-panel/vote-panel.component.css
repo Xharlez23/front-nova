@@ -1,1 +1,22 @@
 :host { display: block; }
+.box-in { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 22px; box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 16px; height: 100%; }
+.cat { color: var(--muted); text-transform: uppercase; letter-spacing: .5px; font-size: 12px; }
+.title { margin: 2px 0 0; font-size: 26px; line-height: 1.2; overflow-wrap: anywhere; }
+.prices { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.price-box { background: #f5f7fb; border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 2px; }
+.price-box span, .price-box em { font-size: 12px; color: var(--muted); font-style: normal; }
+.price-box strong { font-size: 19px; }
+.gain { background: #e8f7ee; } .gain strong { color: var(--green); }
+.gain.neg { background: #ffecec; } .gain.neg strong { color: var(--red); }
+.desc { margin: 0; color: #465165; }
+.votes { border: 1px solid var(--line); border-radius: 12px; padding: 14px; text-align: center; }
+.slots { display: flex; gap: 8px; justify-content: center; margin-bottom: 8px; }
+.slot { width: 38px; height: 12px; border-radius: 99px; background: #e3e7ee; }
+.slot.yes { background: var(--green); } .slot.no { background: var(--red); }
+.votes p { margin: 0 0 4px; font-size: 14px; } .votes small { color: var(--muted); }
+.btns { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: auto; }
+.vbtn { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 16px; border-radius: 14px; font-size: 15px; color: #fff; transition: transform .12s; }
+.vbtn span { font-size: 34px; } .vbtn:hover { transform: translateY(-2px); }
+.vbtn.no { background: var(--red); } .vbtn.yes { background: var(--green); }
+.vbtn.sel { outline: 4px solid #17203344; outline-offset: 2px; }
+@media (max-width: 560px) { .prices { grid-template-columns: 1fr; } }

@@ -1,15 +1,29 @@
-<div class="panel">
-  @if (cur; as p) {
-    <div class="present">
-      <div class="hero">@if (p.image) {<img [src]="p.image" [alt]="p.name">} @else {<b>IMAGEN</b>}</div>
-      <app-vote-panel [product]="p" [needed]="needed" (vote)="vote($event)" />
-    </div>
-  } @else {<div class="empty">Agrega productos en la pestaña Productos para empezar.</div>}
-  <div class="foot">
-    <b>Votaste {{ myVotes }} de {{ items.length }} · Decididos: {{ decided }}</b>
-    <div class="track"><div class="fill" [style.width.%]="items.length ? myVotes * 100 / items.length : 0"></div></div>
-    <button class="secondary" (click)="go(-1)">← Anterior</button>
-    <button class="secondary" (click)="go(1)">Siguiente →</button>
-    <button class="secondary" (click)="full()">⛶ Pantalla completa</button>
+<div class="top-bar">
+  <div><h2>Presentación</h2><span class="count">{{ list.length ? i + 1 : 0 }} de {{ list.length }}</span></div>
+  <div class="actions">
+    <button class="chip" [class.on]="onlyMine" (click)="toggleMine()">Solo sin mi voto</button>
+    <button class="secondary small" (click)="full()">⛶ Pantalla completa</button>
   </div>
 </div>
+
+@if (cur; as p) {
+  <div class="stage">
+    <div class="photo">
+      <div class="badge"><app-status-badge [value]="p.eval_status ?? 'pendiente'" /></div>
+      @if (p.image) {<img [src]="p.image" [alt]="p.name">} @else {<span class="ph-big">📦</span>}
+    </div>
+    <app-vote-panel [product]="p" [needed]="needed" [total]="total" (vote)="vote($event)" />
+  </div>
+} @else {
+  <div class="empty">{{ items.length ? '¡Ya votaste todos los productos! 🎉' : 'Agrega productos en la pestaña Productos para empezar.' }}</div>
+}
+
+<div class="nav">
+  <button class="secondary" (click)="go(-1)">← Anterior</button>
+  <div class="progress">
+    <div class="track"><div class="fill" [style.width.%]="items.length ? myVotes * 100 / items.length : 0"></div></div>
+    <small>Votaste {{ myVotes }} de {{ items.length }} · Decididos: {{ decided }}</small>
+  </div>
+  <button class="secondary" (click)="go(1)">Siguiente →</button>
+</div>
+<p class="hint">Atajos: ← → para navegar · A aprobar · R rechazar</p>

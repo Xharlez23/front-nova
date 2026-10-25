@@ -13,4 +13,11 @@ export class VotePanelComponent {
   @Input({ required: true }) product!: Product;
   @Input() needed = 2;
   @Output() vote = new EventEmitter<VoteValue>();
+  @Input() total = 3;
+  get profit() { return this.product.price - (this.product.cost ?? 0); }
+  get margin() { return this.product.price ? Math.round(this.profit * 100 / this.product.price) : 0; }
+  get slots() {
+    const a = this.product.approvals ?? 0, r = this.product.rejections ?? 0;
+    return Array.from({ length: this.total }, (_, i) => i < a ? 'yes' : i < a + r ? 'no' : '');
+  }
 }
