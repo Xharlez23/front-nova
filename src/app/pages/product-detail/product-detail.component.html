@@ -1,8 +1,10 @@
-<a routerLink="/" class="back">← Volver al catálogo</a>
-
 @if (product; as p) {
+  <nav class="crumbs">
+    <a routerLink="/">Inicio</a> › <span>{{ p.category || 'Productos' }}</span> › <b>{{ p.name }}</b>
+  </nav>
+
   <div class="detail">
-    <div class="gallery">
+    <div class="gallery" [class.zoomable]="p.image" (click)="openZoom()">
       @if (p.image) {<img [src]="p.image" [alt]="p.name">} @else {<span class="ph-big">📦</span>}
     </div>
     <div class="info">
@@ -18,17 +20,30 @@
         <li><span>Unidades disponibles</span><b>{{ p.stock }}</b></li>
         <li><span>Código</span><b>#{{ p.id }}</b></li>
       </ul>
+
       @if (p.stock > 0) {
         <div class="buy">
           <div class="stepper">
             <button (click)="change(-1)">−</button><b>{{ qty }}</b><button (click)="change(1)">+</button>
           </div>
           <button class="primary" [disabled]="maxQty < 1" (click)="add()">
-            {{ maxQty < 1 ? 'Ya tienes el máximo en el carrito' : 'Añadir al carrito' }}
+            {{ maxQty < 1 ? 'Máximo en el carrito' : 'Añadir al carrito' }}
           </button>
+          <button class="secondary" (click)="buyNow()">Comprar ahora</button>
         </div>
       }
       @if (inCart) {<p class="ok">Tienes {{ inCart }} en el carrito · <a routerLink="/carrito">Ir al carrito</a></p>}
+
+      <div class="actions">
+        @if (hasWa) {<a class="btn-link wa" [href]="waLink" target="_blank" rel="noopener">💬 Preguntar por WhatsApp</a>}
+        <button class="secondary small" (click)="share()">{{ copied ? '¡Enlace copiado!' : '↗ Compartir' }}</button>
+      </div>
+
+      <ol class="steps">
+        <li>Añade el producto al carrito.</li>
+        <li>Confirma tus datos de entrega.</li>
+        <li>Te contactamos para coordinar pago y envío.</li>
+      </ol>
     </div>
   </div>
 
@@ -36,8 +51,13 @@
     <h2>Productos relacionados</h2>
     <div class="grid">@for (r of related; track r.id) {<app-product-card [product]="r" (add)="addRelated($event)" />}</div>
   }
+
+  @if (zoom && p.image) {
+    <div class="lightbox" (click)="zoom = false"><img [src]="p.image" [alt]="p.name"><span>✕</span></div>
+  }
 } @else if (loading) {
   <p class="count">Cargando…</p>
 } @else {
+  <a routerLink="/" class="back">← Volver al catálogo</a>
   <div class="empty">Este producto no está disponible. <a routerLink="/">Ver el catálogo</a></div>
 }

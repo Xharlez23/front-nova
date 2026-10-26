@@ -19,3 +19,13 @@ h1 { margin: 0; font-size: 30px; line-height: 1.2; overflow-wrap: anywhere; }
 .tag.ok { background: #e1f6e8; color: #126b3b; }
 h2 { margin: 30px 0 12px; }
 @media (max-width: 850px) { .detail { grid-template-columns: 1fr; } .gallery { min-height: 260px; } .gallery img { height: 300px; } }
+.crumbs { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 14px; font-size: 13px; color: var(--muted); }
+.crumbs a { color: var(--blue); text-decoration: none; } .crumbs b { color: var(--ink); font-weight: 600; }
+.zoomable { cursor: zoom-in; }
+.actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.btn-link { display: inline-flex; align-items: center; padding: 8px 14px; border-radius: 10px; font-weight: 650; font-size: 13px; text-decoration: none; }
+.wa { background: #e6f7ee; color: #126b3b; } .wa:hover { background: #d5f0e0; }
+.steps { margin: 4px 0 0; padding: 14px 16px 14px 34px; background: var(--blue-soft); border-radius: 12px; color: var(--blue-ink); font-size: 14px; }
+.lightbox { position: fixed; inset: 0; background: rgba(14, 26, 46, .82); display: grid; place-items: center; z-index: 50; cursor: zoom-out; padding: 24px; }
+.lightbox img { max-width: min(96vw, 1000px); max-height: 90vh; object-fit: contain; background: #fff; border-radius: 14px; mix-blend-mode: normal; padding: 12px; }
+.lightbox span { position: absolute; top: 18px; right: 24px; color: #fff; font-size: 28px; }
