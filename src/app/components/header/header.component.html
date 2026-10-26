@@ -1,5 +1,5 @@
 <header class="top"><div class="in">
-  <a routerLink="/" class="logo">⚡ NOVA</a><span class="sp"></span>
+  <a routerLink="/" class="logo"><span class="mark">⚡</span>Nova<span class="sub-logo">gadgets</span></a><span class="sp"></span>
   @if (auth.isAdmin()) {<a routerLink="/admin">Panel admin</a>}
   <a routerLink="/carrito">🛒 Carrito ({{ cart.count() }})</a>
   @if (auth.user(); as u) {

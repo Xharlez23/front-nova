@@ -550,3 +550,48 @@ small {
         grid-template-columns: repeat(2, 1fr)
     }
 }
+
+/* ===== Tema Nova: gadgets en azules suaves ===== */
+:root {
+  --bg: #f1f5fb; --ink: #0e1a2e; --muted: #5f7089; --line: #d9e3f1;
+  --blue: #2f6bed; --blue-soft: #e8f0ff; --blue-ink: #1b3f9a;
+  --shadow: 0 10px 30px rgba(24, 56, 120, .08);
+}
+body {
+  font-family: 'Inter', system-ui, sans-serif; background-color: var(--bg);
+  background-image: radial-gradient(#cfdcf0 1px, transparent 1px); background-size: 22px 22px;
+}
+h1, h2, h3, .logo, .price, .sum strong { font-family: 'Space Grotesk', 'Inter', sans-serif; letter-spacing: -.02em; }
+::selection { background: #cfe0ff; }
+
+/* Botones y campos */
+.primary { background: linear-gradient(180deg, #3b7bff, #2a62e0); box-shadow: 0 4px 14px rgba(47, 107, 237, .28); }
+.primary:hover:not(:disabled) { filter: brightness(1.06); box-shadow: 0 6px 18px rgba(47, 107, 237, .38); }
+.secondary { background: var(--blue-soft); color: var(--blue-ink); }
+.secondary:hover { background: #dbe8ff; }
+input:focus, select:focus, textarea:focus { outline: none; border-color: #7ea6ff; box-shadow: 0 0 0 4px rgba(47, 107, 237, .14); }
+
+/* Encabezado */
+.top { background: rgba(255, 255, 255, .82); backdrop-filter: blur(10px); }
+.top a:hover { color: var(--blue); }
+.top a[href="/carrito"] { background: var(--blue-soft); color: var(--blue-ink); padding: 8px 14px; border-radius: 99px; }
+.logo { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; }
+.mark { display: inline-grid; place-items: center; width: 30px; height: 30px; border-radius: 9px; font-size: 16px; color: #fff; background: linear-gradient(135deg, #3b7bff, #6aa3ff); box-shadow: 0 4px 12px rgba(47, 107, 237, .35); }
+.sub-logo { color: var(--blue); font-weight: 500; margin-left: -4px; }
+
+/* Chips y pestañas */
+.chip { background: #fff; border: 1px solid var(--line); color: var(--muted); }
+.chip:hover { border-color: #9db9ea; color: var(--blue-ink); }
+.chip.on { background: var(--blue-soft); border-color: #9db9ea; color: var(--blue-ink); }
+.tabs { background: #e4edfb; }
+.tab.on { color: var(--blue-ink); }
+
+/* Tarjetas y fotos: las fotos de fondo blanco se funden con el degradado */
+.card { border-radius: 16px; transition: transform .2s, box-shadow .2s, border-color .2s; }
+.card:hover { border-color: #b6ccf0; }
+app-product-image, .ph { background: radial-gradient(circle at 50% 30%, #fff 0%, #e6effd 75%); }
+.card img, .item img { background: transparent; mix-blend-mode: multiply; }
+.gallery img, .photo img { mix-blend-mode: multiply; }
+.cb small { color: var(--blue); font-weight: 600; }
+.price { color: var(--blue-ink); }
+.sum div { border-top: 3px solid #9db9ea; }
