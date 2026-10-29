@@ -1,16 +1,29 @@
-<div class="cols2">
-  <div class="panel">
-    <h2>Tu carrito</h2>
-    @for (i of items(); track i.p.id) {
-      <app-cart-item [product]="i.p" [qty]="i.qty"
-        (qtyChange)="cart.setQty(i.p.id, $event, i.p.stock)" (remove)="cart.remove(i.p.id)" />
-    } @empty {<p class="count">Tu carrito está vacío.</p>}
-    @if (items().length) {<div class="total"><span>Total</span><span>{{ total() | cop }}</span></div>}
+@if (orderId) {
+  <div class="panel done">
+    <div class="check">✅</div>
+    <h2>¡Pedido #{{ orderId }} registrado!</h2>
+    <p>Pagas <b>contra entrega</b>, cuando recibas tu pedido.</p>
+    @if (wa) {
+      <p>Último paso: envíanos el pedido por WhatsApp para confirmarlo.</p>
+      <a class="wa-btn" [href]="wa" target="_blank" rel="noopener">💬 Enviar pedido por WhatsApp</a>
+    } @else {<p>Te contactaremos para coordinar la entrega.</p>}
+    <a routerLink="/">Seguir comprando</a>
   </div>
-  @if (items().length) {
-    <app-checkout-form [initialName]="userName" [busy]="busy" [msg]="msg" [bad]="bad" (confirmed)="buy($event)" />
-  } @else if (msg) {<div class="panel"><p [class]="bad ? 'err' : 'ok'">{{ msg }}</p></div>}
-</div>
+} @else {
+  <div class="cols2">
+    <div class="panel">
+      <h2>Tu carrito</h2>
+      @for (i of items(); track i.p.id) {
+        <app-cart-item [product]="i.p" [qty]="i.qty"
+          (qtyChange)="cart.setQty(i.p.id, $event, i.p.stock)" (remove)="cart.remove(i.p.id)" />
+      } @empty {<p class="count">Tu carrito está vacío.</p>}
+      @if (items().length) {<div class="total"><span>Total</span><span>{{ total() | cop }}</span></div>}
+    </div>
+    @if (items().length) {
+      <app-checkout-form [initialName]="userName" [busy]="busy" [msg]="msg" [bad]="bad" (confirmed)="buy($event)" />
+    }
+  </div>
+}
 
 <div class="panel">
   <h2>Mis pedidos</h2>

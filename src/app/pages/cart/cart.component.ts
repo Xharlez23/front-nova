@@ -7,6 +7,9 @@ import { CartService } from '../../core/cart.service';
 import { ShopService } from '../../core/shop.service';
 import { CopPipe } from '../../shared/cop.pipe';
 import { Product, Order, CheckoutForm } from '../../shared/models';
+import { RouterLink } from '@angular/router';
+import { STORE } from '../../core/store.config';
+import { orderMessage, validPhone, whatsappUrl } from '../../shared/whatsapp';
 
 @Component({
   selector: 'app-cart',
@@ -25,6 +28,7 @@ export class CartComponent implements OnInit {
   }));
   total = computed(() => this.items().reduce((a, i) => a + i.p.price * i.qty, 0));
   orders: Order[] = []; msg = ''; bad = false; busy = false;
+  orderId = 0; wa = '';
 
   ngOnInit() {
     this.shop.products().subscribe(p => { this.products.set(p); this.cart.prune(p.map(x => x.id)); });
@@ -32,10 +36,15 @@ export class CartComponent implements OnInit {
   }
   loadOrders() { this.shop.myOrders().subscribe(o => this.orders = o); }
   buy(form: CheckoutForm) {
-    this.busy = true;
-    this.shop.checkout(form, this.cart.lines()).subscribe({
-      next: r => { this.msg = `¡Pedido #${r.orderId} recibido! Te contactaremos para coordinar pago y entrega.`; this.bad = false; this.busy = false; this.cart.clear(); this.loadOrders(); },
-      error: e => { this.msg = e.error?.error || 'Error al crear el pedido'; this.bad = true; this.busy = false; },
-    });
-  }
+  this.busy = true; this.msg = '';
+  const snapshot = { items: this.items(), total: this.total() };
+  this.shop.checkout(form, this.cart.lines()).subscribe({
+    next: r => {
+      this.orderId = r.orderId;
+      this.wa = validPhone(STORE.whatsapp) ? whatsappUrl(STORE.whatsapp, orderMessage(r.orderId, form, snapshot.items, snapshot.total)) : '';
+      this.busy = false; this.cart.clear(); this.loadOrders();
+    },
+    error: e => { this.msg = e.error?.error || 'Error al crear el pedido'; this.bad = true; this.busy = false; },
+  });
+}
 }

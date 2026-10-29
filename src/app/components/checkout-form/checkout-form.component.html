@@ -5,6 +5,10 @@
   <div class="field"><label>Ciudad *</label><input [(ngModel)]="form.city"></div>
   <div class="field"><label>Dirección *</label><input [(ngModel)]="form.address"></div>
   <div class="field"><label>Notas</label><textarea rows="2" [(ngModel)]="form.notes"></textarea></div>
+  <div class="pay">
+    <span class="pay-ic">💵</span>
+    <div><b>Pago contra entrega</b><small>Pagas cuando recibes tu pedido.</small></div>
+  </div>
   @if (err) {<p class="err">{{ err }}</p>} @else if (msg) {<p [class]="bad ? 'err' : 'ok'">{{ msg }}</p>}
   <button class="primary" style="width:100%" [disabled]="busy" (click)="send()">Confirmar pedido</button>
 </div>

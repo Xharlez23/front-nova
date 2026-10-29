@@ -1,1 +1,4 @@
 :host { display: block; }
+.pay { display: flex; gap: 12px; align-items: center; background: var(--blue-soft); border: 1px solid #b6ccf0; border-radius: 12px; padding: 12px 14px; margin: 4px 0 12px; }
+.pay-ic { font-size: 26px; }
+.pay small { display: block; color: var(--muted); }

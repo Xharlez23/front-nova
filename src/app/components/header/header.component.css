@@ -1,1 +1,36 @@
 :host { display: block; position: sticky; top: 0; z-index: 10; }
+.links { display: flex; align-items: center; gap: 16px; }
+.who { color: var(--muted); font-size: 14px; }
+.cart { white-space: nowrap; }
+.backdrop { display: none; }
+
+/* Botón hamburguesa (oculto en computador) */
+.burger { display: none; position: relative; width: 42px; height: 42px; padding: 0; background: var(--blue-soft); border-radius: 12px; }
+.burger span { position: absolute; left: 11px; right: 11px; height: 2px; border-radius: 2px; background: var(--blue-ink); transition: transform .25s, opacity .2s, top .25s; }
+.burger span:nth-child(1) { top: 14px; }
+.burger span:nth-child(2) { top: 20px; }
+.burger span:nth-child(3) { top: 26px; }
+.burger.on span:nth-child(1) { top: 20px; transform: rotate(45deg); }
+.burger.on span:nth-child(2) { opacity: 0; }
+.burger.on span:nth-child(3) { top: 20px; transform: rotate(-45deg); }
+
+@media (max-width: 720px) {
+  .top .in { flex-wrap: nowrap; padding: 10px 16px; gap: 10px; }
+  .burger { display: block; }
+  .lbl { display: none; }   /* el carrito muestra solo el icono y la cantidad */
+
+  .links {
+    position: absolute; left: 0; right: 0; top: 100%;
+    flex-direction: column; align-items: stretch; gap: 0;
+    background: #fff; border-bottom: 1px solid var(--line); box-shadow: 0 18px 30px rgba(24, 56, 120, .14);
+    padding: 6px 16px 14px;
+    opacity: 0; visibility: hidden; transform: translateY(-8px);
+    transition: opacity .2s, transform .2s, visibility .2s;
+  }
+  .links.open { opacity: 1; visibility: visible; transform: none; }
+  .links a, .who { padding: 14px 4px; border-bottom: 1px solid var(--line); }
+  .links > :last-child { border-bottom: 0; }
+  .backdrop { display: block; position: fixed; inset: 0; background: rgba(14, 26, 46, .35); z-index: 5; }
+}
+
+@media (max-width: 380px) { .sub-logo { display: none; } }

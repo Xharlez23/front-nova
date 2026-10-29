@@ -1,2 +1,7 @@
 .status.pagado, .status.enviado, .status.entregado { background: #e1f6e8; color: #126b3b; }
 .status.cancelado { background: #ffe7e7; color: #a51f2a; }
+:host { display: block; }
+.done { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.check { font-size: 46px; }
+.wa-btn { display: inline-flex; align-items: center; gap: 8px; background: #25d366; color: #fff; padding: 14px 22px; border-radius: 12px; font-weight: 700; text-decoration: none; box-shadow: 0 6px 18px rgba(37, 211, 102, .35); }
+.wa-btn:hover { filter: brightness(1.05); }
