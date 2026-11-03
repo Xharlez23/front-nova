@@ -1,0 +1,24 @@
+<div class="panel">
+  <h2>{{ editing ? 'Editar devolución #' + editing.id : 'Registrar devolución' }}</h2>
+  <p class="sub">Dinero que ya le devolviste a un administrador (capital o ganancia).</p>
+  <div class="field"><label>Administrador *</label>
+    <select [(ngModel)]="userId">
+      <option [ngValue]="null">Selecciona…</option>
+      @for (a of admins; track a.id) {<option [ngValue]="a.id">{{ a.name }}</option>}
+    </select>
+  </div>
+  @if (userId) {
+  <p class="hint">Pendiente por devolver: <b>{{ pending | cop }}</b>
+    <button class="secondary small" type="button" [disabled]="pending <= 0" (click)="usePending()">Usar este
+      valor</button>
+  </p>
+  }
+  <div class="field"><label>Monto *</label><input type="number" min="1" [(ngModel)]="amount"></div>
+  <div class="field"><label>Nota</label><input [(ngModel)]="note" placeholder="Transferencia, efectivo…"></div>
+  @if (err || msg) {<p class="err">{{ err || msg }}</p>}
+  <div class="row" style="border:0">
+    <button class="primary" [disabled]="busy" (click)="submit()">{{ editing ? 'Guardar cambios' : 'Registrar devolución'
+      }}</button>
+    @if (editing) {<button class="secondary" (click)="cancelled.emit()">Cancelar</button>}
+  </div>
+</div>

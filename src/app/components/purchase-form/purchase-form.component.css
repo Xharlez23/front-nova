@@ -1,0 +1,7 @@
+:host { display: block; }
+.mini { margin: 16px 0 8px; font-size: 15px; }
+.total-line { display: flex; justify-content: space-between; padding: 12px 14px; background: var(--blue-soft); border-radius: 12px; font-size: 18px; }
+.contrib { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 8px; }
+.contrib input { width: 150px; }
+.check-line { margin: 4px 0 10px; font-size: 14px; color: var(--green); font-weight: 600; }
+.check-line.bad { color: var(--red); }

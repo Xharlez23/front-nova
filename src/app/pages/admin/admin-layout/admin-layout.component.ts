@@ -10,6 +10,6 @@ import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 export class AdminLayoutComponent {
   tabs = [
     { path: 'presentacion', label: '01 · Presentación' }, { path: 'productos', label: '02 · Productos' },
-    { path: 'pedidos', label: '03 · Pedidos' }, { path: 'informe', label: '04 · Informe' },
+    { path: 'finanzas', label: '03 · Finanzas' }, { path: 'pedidos', label: '04 · Pedidos' }, { path: 'informe', label: '05 · Informe' },
   ];
 }

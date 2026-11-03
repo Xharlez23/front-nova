@@ -4,7 +4,7 @@
   <div class="field"><label>Nombre *</label><input [(ngModel)]="f.name"></div>
   <div class="field"><label>Categoría</label><input [(ngModel)]="f.category" placeholder="Audio, Cargadores…"></div>
   <div class="two">
-    <div class="field"><label>Costo (COP)</label><input type="number" [(ngModel)]="f.cost"></div>
+    <div class="field"><label>Costo (COP)</label><input type="number" [(ngModel)]="f.cost" [disabled]="!!f.acquired"></div>
     <div class="field"><label>Venta (COP) *</label><input type="number" [(ngModel)]="f.price"></div>
   </div>
   <div class="field"><label>Stock</label><input type="number" [(ngModel)]="f.stock"></div>
@@ -14,7 +14,7 @@
     <input type="file" accept="image/*" (change)="onFile($event)">
     @if (f.image) {<img [src]="f.image" alt="" style="max-height:90px;object-fit:contain">}
   </div>
-  <label><input type="checkbox" [(ngModel)]="f.active"> Visible en la tienda</label>
+  <label><input type="checkbox" [(ngModel)]="f.active"> <p class="sub">Se publica desde la lista de productos, cuando ya esté en inventario.</p></label>
   @if (err || msg) {<p class="err">{{ err || msg }}</p>}
   <div class="row" style="border:0">
     <button class="primary" [disabled]="busy" (click)="submit()">Guardar</button>

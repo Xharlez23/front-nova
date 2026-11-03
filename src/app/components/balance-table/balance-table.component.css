@@ -1,0 +1,8 @@
+:host { display: block; }
+.wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th, td { padding: 10px 8px; text-align: right; border-bottom: 1px solid var(--line); white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; }
+th { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .04em; }
+.pend { font-weight: 700; color: var(--blue-ink); } .pend.zero { color: var(--muted); font-weight: 500; }
+tfoot td { font-weight: 700; border-bottom: 0; }

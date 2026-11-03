@@ -1,0 +1,42 @@
+<div class="panel">
+  <h2>{{ editing ? 'Editar compra #' + editing.id : 'Registrar compra' }}</h2>
+  <p class="sub">Solo productos aprobados. Al guardar, entran al inventario (sin publicarse).</p>
+  @if (editing) {
+  <p class="sub">Producto: <b>{{ editing.product }}</b>. No se puede cambiar: si te equivocaste, borra la compra y
+    regístrala de nuevo.</p>
+  } @else {
+  <div class="field"><label>Producto *</label>
+    <select [(ngModel)]="productId">
+      <option [ngValue]="null">Selecciona un producto…</option>
+      @for (p of products; track p.id) {<option [ngValue]="p.id">{{ p.name }}</option>}
+    </select>
+  </div>
+  }
+  <div class="two">
+    <div class="field"><label>Unidades *</label><input type="number" min="1" [(ngModel)]="qty"></div>
+    <div class="field"><label>Costo por unidad *</label><input type="number" min="0" [(ngModel)]="unitCost"></div>
+  </div>
+  <div class="field"><label>Costos extra (envío, impuestos)</label><input type="number" min="0" [(ngModel)]="extra">
+  </div>
+  <div class="field"><label>Notas</label><input [(ngModel)]="notes" placeholder="Proveedor, referencia…"></div>
+  <div class="total-line"><span>Costo total</span><b>{{ total | cop }}</b></div>
+
+  <h3 class="mini">¿Quién puso el dinero?</h3>
+  @for (a of admins; track a.id) {
+  <div class="contrib"><span>{{ a.name }}</span>
+    <input type="number" min="0" [ngModel]="amounts[a.id] ?? 0" (ngModelChange)="amounts[a.id] = $event">
+  </div>
+  }
+  <div class="check-line" [class.bad]="diff !== 0">
+    Aportado {{ sum | cop }} ·
+    @if (diff === 0) {✓ cuadra} @else if (diff > 0) {faltan {{ absDiff | cop }}} @else {sobran {{ absDiff | cop }}}
+  </div>
+  <button class="secondary small" type="button" (click)="split()">Dividir en partes iguales</button>
+
+  @if (err || msg) {<p class="err">{{ err || msg }}</p>}
+  <div class="row" style="border:0;margin-top:12px">
+    <button class="primary" [disabled]="busy" (click)="submit()">{{ editing ? 'Guardar cambios' : 'Registrar compra'
+      }}</button>
+    @if (editing) {<button class="secondary" (click)="cancelled.emit()">Cancelar</button>}
+  </div>
+</div>

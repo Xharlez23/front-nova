@@ -15,4 +15,11 @@ export class AdminProductCardComponent {
   @Output() edit = new EventEmitter<Product>();
   @Output() remove = new EventEmitter<Product>();
   @Output() update = new EventEmitter<Partial<Product>>();
+  get stage() {
+  const p = this.product;
+  if (p.eval_status === 'rechazado') return { key: 'rechazado', label: 'Rechazado' };
+  if (p.eval_status !== 'aprobado') return { key: 'pendiente', label: 'Pendiente' };
+  if (!p.acquired) return { key: 'aprobado', label: 'Aprobado · por comprar' };
+  return p.active ? { key: 'publicado', label: 'Publicado' } : { key: 'inventario', label: 'En inventario' };
+}
 }

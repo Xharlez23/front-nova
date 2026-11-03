@@ -1,2 +1,8 @@
 :host { display: block; }
 .card { height: 100%; }
+.stage { align-self: flex-start; border-radius: 99px; padding: 3px 9px; font-size: 11px; font-weight: 750; }
+.stage.pendiente { background: #fff4d9; color: #875a00; }
+.stage.rechazado { background: #ffe7e7; color: #a51f2a; }
+.stage.aprobado { background: #e8f0ff; color: #1b3f9a; }
+.stage.inventario { background: #efe8ff; color: #5b34b3; }
+.stage.publicado { background: #e1f6e8; color: #126b3b; }

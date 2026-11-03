@@ -1,0 +1,20 @@
+<div class="wrap">
+  <table>
+    <thead><tr><th>Administrador</th><th>Puso</th><th>Le corresponde</th><th>Ganancia</th><th>Recibido</th><th>Pendiente</th></tr></thead>
+    <tbody>
+      @for (r of rows; track r.id) {
+        <tr>
+          <td>{{ r.name }}</td><td>{{ r.invested | cop }}</td><td>{{ r.entitled | cop }}</td>
+          <td>{{ r.profit | cop }}</td><td>{{ r.paid | cop }}</td>
+          <td class="pend" [class.zero]="r.pending <= 0">{{ r.pending | cop }}</td>
+        </tr>
+      } @empty {<tr><td colspan="6">Aún no hay administradores con compras.</td></tr>}
+    </tbody>
+    @if (rows.length) {
+      <tfoot><tr>
+        <td>Total</td><td>{{ totals.invested | cop }}</td><td>{{ totals.entitled | cop }}</td>
+        <td>{{ totals.profit | cop }}</td><td>{{ totals.paid | cop }}</td><td>{{ totals.pending | cop }}</td>
+      </tr></tfoot>
+    }
+  </table>
+</div>

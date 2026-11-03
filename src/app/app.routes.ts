@@ -15,6 +15,7 @@ export const routes: Routes = [
       { path: 'productos', loadComponent: () => import('./pages/admin/products/products.component').then(m => m.ProductsComponent) },
       { path: 'pedidos', loadComponent: () => import('./pages/admin/orders/orders.component').then(m => m.OrdersComponent) },
       { path: 'informe', loadComponent: () => import('./pages/admin/report/report.component').then(m => m.ReportComponent) },
+      { path: 'finanzas', loadComponent: () => import('./pages/admin/finance/finance.component').then(m => m.FinanceComponent) },
     ],
   },
   { path: '**', redirectTo: '' },
