@@ -26,9 +26,10 @@ export class FinanceComponent implements OnInit {
   ngOnInit() { this.fin.admins().subscribe(a => this.admins = a); this.loadAll(); }
   loadAll() {
     this.fin.summary().subscribe(s => this.summary = s);
+    console.log('summary', this.summary);
     this.fin.purchases().subscribe(p => this.purchases = p);
     this.fin.payouts().subscribe(p => this.payouts = p);
-    this.admin.products().subscribe(p => this.approved = p.filter(x => x.eval_status === 'aprobado'));
+    this.admin.products().subscribe(p => this.approved = p.filter(x => x.eval_status === 'aprobado' || x.acquired));
   }
   buy(input: PurchaseInput) {
     this.busyBuy = true; this.buyMsg = '';
@@ -48,7 +49,7 @@ export class FinanceComponent implements OnInit {
   }
   editPurchase(p: Purchase) { this.editingPurchase = p; scrollTo({ top: 0, behavior: 'smooth' }); }
   removePurchase(p: Purchase) {
-    if (!confirm(`¿Borrar la compra de ${p.product}? Se descontarán ${p.qty} unidades del inventario.`)) return;
+    if (!confirm(`¿Borrar la compra #${p.id}? Se descontará su stock del inventario.`)) return;
     this.fin.deletePurchase(p.id).subscribe({
       next: () => { if (this.editingPurchase?.id === p.id) this.editingPurchase = null; this.loadAll(); },
       error: e => alert(e.error?.error || 'No se pudo borrar'),

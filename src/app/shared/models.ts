@@ -1,6 +1,6 @@
 export interface User { id: number; name: string; email: string; role: 'cliente' | 'admin'; }
 export interface AuthResponse { token: string; user: User; }
-export type EvalStatus = 'pendiente' | 'aprobado' | 'rechazado';
+export type EvalStatus = 'pendiente' | 'aprobado' | 'rechazado' | 'inventario';
 export type VoteValue = 'aprobado' | 'rechazado';
 export interface Product {
   id: number; name: string; description?: string; category?: string;
@@ -32,10 +32,14 @@ export interface FinanceSummary {
   admins: AdminBalance[];
 }
 export interface Contribution { user_id: number; amount: number; }
+export interface PurchaseItem { product_id: number; product: string; qty: number; unit_cost: number; line_total: number; }
 export interface Purchase {
-  id: number; product_id: number; product: string; qty: number; unit_cost: number; extra_cost: number; total: number;
-  notes: string; created_at: string; contributions: (Contribution & { name: string })[];
+  id: number; notes: string; extra_cost: number; total: number; created_at: string;
+  items: PurchaseItem[]; contributions: (Contribution & { name: string })[];
 }
-export interface PurchaseInput { product_id: number; qty: number; unit_cost: number; extra_cost: number; notes: string; contributions: Contribution[]; }
+export interface PurchaseInput {
+  items: { product_id: number; qty: number; unit_cost: number }[];
+  extra_cost: number; notes: string; contributions: Contribution[];
+}
 export interface Payout { id: number; user_id: number; name: string; amount: number; note: string; created_at: string; }
 export interface PayoutInput { user_id: number; amount: number; note: string; }

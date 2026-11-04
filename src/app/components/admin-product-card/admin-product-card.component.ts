@@ -18,7 +18,7 @@ export class AdminProductCardComponent {
   get stage() {
   const p = this.product;
   if (p.eval_status === 'rechazado') return { key: 'rechazado', label: 'Rechazado' };
-  if (p.eval_status !== 'aprobado') return { key: 'pendiente', label: 'Pendiente' };
+  if (p.eval_status !== 'aprobado' && p.eval_status !== 'inventario') return { key: 'pendiente', label: 'Pendiente' };
   if (!p.acquired) return { key: 'aprobado', label: 'Aprobado · por comprar' };
   return p.active ? { key: 'publicado', label: 'Publicado' } : { key: 'inventario', label: 'En inventario' };
 }
