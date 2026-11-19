@@ -1,21 +1,19 @@
 <header class="top">
   <div class="in">
-    <a routerLink="/" class="logo" (click)="close()"><span class="mark">⚡</span>Nova<span class="sub-logo">gadgets</span></a>
+    <a routerLink="/" class="brand" aria-label="Nova, tecnología a tu alcance">
+      <img src="logo.png" alt="Nova" class="wave">
+      <span class="tagline">Tecnología<br>a tu alcance</span>
+    </a>
     <span class="sp"></span>
-
-    <nav class="links" id="menu" [class.open]="open">
-      @if (auth.isAdmin()) {<a routerLink="/admin" (click)="close()">Panel admin</a>}
+    <nav class="links">
+      @if (auth.isAdmin()) {<a routerLink="/admin" routerLinkActive="on">Panel admin</a>}
       @if (auth.user(); as u) {
-        <span class="who">{{ u.name }}</span>
-        <a href="#" (click)="logout($event)">Salir</a>
-      } @else {<a routerLink="/login" (click)="close()">Ingresar</a>}
+        <span class="who">{{ u.name }}</span><a href="#" (click)="logout($event)">Salir</a>
+      } @else {<a routerLink="/login" routerLinkActive="on">Ingresar</a>}
+      <a routerLink="/carrito" class="cart">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2l2.4 10.2a1 1 0 0 0 1 .8h8.8a1 1 0 0 0 1-.8L20 8H6.2M9 20h.01M17 20h.01" /></svg>
+        Carrito <span class="pill">{{ cart.count() }}</span>
+      </a>
     </nav>
-
-    <a routerLink="/carrito" class="cart" (click)="close()">🛒 <span class="lbl">Carrito</span> ({{ cart.count() }})</a>
-
-    <button class="burger" [class.on]="open" (click)="toggle()" aria-label="Menú" aria-controls="menu" [attr.aria-expanded]="open">
-      <span></span><span></span><span></span>
-    </button>
   </div>
 </header>
-@if (open) {<div class="backdrop" (click)="close()"></div>}

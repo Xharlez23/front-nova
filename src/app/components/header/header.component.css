@@ -1,36 +1,137 @@
-:host { display: block; position: sticky; top: 0; z-index: 10; }
-.links { display: flex; align-items: center; gap: 16px; }
-.who { color: var(--muted); font-size: 14px; }
-.cart { white-space: nowrap; }
-.backdrop { display: none; }
-
-/* Botón hamburguesa (oculto en computador) */
-.burger { display: none; position: relative; width: 42px; height: 42px; padding: 0; background: var(--blue-soft); border-radius: 12px; }
-.burger span { position: absolute; left: 11px; right: 11px; height: 2px; border-radius: 2px; background: var(--blue-ink); transition: transform .25s, opacity .2s, top .25s; }
-.burger span:nth-child(1) { top: 14px; }
-.burger span:nth-child(2) { top: 20px; }
-.burger span:nth-child(3) { top: 26px; }
-.burger.on span:nth-child(1) { top: 20px; transform: rotate(45deg); }
-.burger.on span:nth-child(2) { opacity: 0; }
-.burger.on span:nth-child(3) { top: 20px; transform: rotate(-45deg); }
-
-@media (max-width: 720px) {
-  .top .in { flex-wrap: nowrap; padding: 10px 16px; gap: 10px; }
-  .burger { display: block; }
-  .lbl { display: none; }   /* el carrito muestra solo el icono y la cantidad */
-
-  .links {
-    position: absolute; left: 0; right: 0; top: 100%;
-    flex-direction: column; align-items: stretch; gap: 0;
-    background: #fff; border-bottom: 1px solid var(--line); box-shadow: 0 18px 30px rgba(24, 56, 120, .14);
-    padding: 6px 16px 14px;
-    opacity: 0; visibility: hidden; transform: translateY(-8px);
-    transition: opacity .2s, transform .2s, visibility .2s;
-  }
-  .links.open { opacity: 1; visibility: visible; transform: none; }
-  .links a, .who { padding: 14px 4px; border-bottom: 1px solid var(--line); }
-  .links > :last-child { border-bottom: 0; }
-  .backdrop { display: block; position: fixed; inset: 0; background: rgba(14, 26, 46, .35); z-index: 5; }
+:host {
+    display: block;
+    position: sticky;
+    top: 0;
+    z-index: 20;
 }
 
-@media (max-width: 380px) { .sub-logo { display: none; } }
+.top {
+  background: linear-gradient(
+    90deg,
+    #629cf8 5%,
+    var(--navy-800) 60%,
+    var(--navy-900) 100%
+  );
+  border-bottom: 1px solid rgba(98, 156, 248, .2);
+}
+
+.in {
+    max-width: 1280px;
+    margin: auto;
+    padding: 12px 22px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.sp {
+    flex: 1;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-decoration: none;
+    color: #fff;
+}
+
+.wave {
+    width: 88px;
+    height: 40px;
+    fill: none;
+    stroke: #fff;
+    stroke-width: 5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.wave .ring {
+    stroke: var(--accent);
+    stroke-width: 4;
+}
+
+.wave .dot {
+    fill: var(--accent);
+    stroke: none;
+}
+
+.tagline {
+    font-size: 12.5px;
+    line-height: 1.25;
+    color: #c9d9f8;
+    border-left: 1px solid rgba(255, 255, 255, .28);
+    padding-left: 14px;
+}
+
+.links {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.links a {
+    color: #dbe7ff;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 8px 14px;
+    border-radius: 99px;
+    transition: background .15s;
+}
+
+.links a:hover,
+.links a.on {
+    background: rgba(98, 156, 248, .2);
+    color: #fff;
+}
+
+.who {
+    color: #9fb6de;
+    font-size: 14px;
+    margin: 0 6px;
+}
+
+.links a.cart {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--accent);
+    color: var(--navy-900);
+    margin-left: 6px;
+}
+
+.links a.cart:hover {
+    background: #7fb0fa;
+    color: var(--navy-900);
+}
+
+.cart svg {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.pill {
+    background: var(--navy-900);
+    color: #fff;
+    border-radius: 99px;
+    min-width: 22px;
+    padding: 0 7px;
+    font-size: 12px;
+    line-height: 22px;
+    text-align: center;
+}
+
+@media (max-width: 720px) {
+    .links {
+        display: none;
+    }
+
+    .in {
+        padding: 10px 16px;
+    }
+}

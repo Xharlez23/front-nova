@@ -1,0 +1,18 @@
+<nav class="bn" aria-label="Navegación principal">
+  @for (t of tabs; track t.label) {
+    @if (t.path) {
+      <a class="bn-tab" [routerLink]="t.path ?? '/'" routerLinkActive="on" [routerLinkActiveOptions]="{ exact: !!t.exact }">
+        <span class="bn-ic">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path [attr.d]="icons[t.icon]" /></svg>
+          @if (t.badge) {<i class="bn-badge">{{ t.badge }}</i>}
+        </span>
+        <span class="bn-lb">{{ t.label }}</span>
+      </a>
+    } @else {
+      <button class="bn-tab" type="button" (click)="logout()">
+        <span class="bn-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path [attr.d]="icons[t.icon]" /></svg></span>
+        <span class="bn-lb">{{ t.label }}</span>
+      </button>
+    }
+  }
+</nav>

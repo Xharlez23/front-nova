@@ -1,0 +1,12 @@
+:host { display: none; }
+@media (max-width: 720px) { :host { display: block; position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; } }
+.bn { display: flex; justify-content: space-around; background: linear-gradient(180deg, var(--navy-800), var(--navy-900)); border-top: 1px solid rgba(98, 156, 248, .22); box-shadow: 0 -10px 30px rgba(7, 19, 41, .35); padding: 0 6px calc(8px + env(safe-area-inset-bottom)); }
+.bn-tab { position: relative; flex: 1; max-width: 96px; display: flex; flex-direction: column; align-items: center; gap: 5px; padding: 10px 2px 0; background: none; border-radius: 0; color: #8fb0ee; text-decoration: none; font-weight: 600; }
+.bn-tab::before { content: ''; position: absolute; top: 0; left: 18%; right: 18%; height: 3px; border-radius: 0 0 4px 4px; background: rgba(98, 156, 248, .35); transition: .2s; }
+.bn-ic { position: relative; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 14px; background: rgba(98, 156, 248, .1); border: 1px solid rgba(98, 156, 248, .28); transition: .2s; }
+.bn-ic svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.bn-lb { font-size: 11px; }
+.bn-tab.on { color: #fff; }
+.bn-tab.on::before { background: var(--accent); box-shadow: 0 0 12px var(--accent); }
+.bn-tab.on .bn-ic { background: rgba(98, 156, 248, .26); border-color: var(--accent); }
+.bn-badge { position: absolute; top: -6px; right: -6px; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 99px; background: var(--accent); color: var(--navy-900); font: 700 11px/18px Inter, sans-serif; font-style: normal; text-align: center; }
