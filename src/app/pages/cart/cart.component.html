@@ -1,37 +1,57 @@
 @if (orderId) {
   <div class="panel done">
-    <div class="check">✅</div>
+    <div class="check">✓</div>
     <h2>¡Pedido #{{ orderId }} registrado!</h2>
     <p>Pagas <b>contra entrega</b>, cuando recibas tu pedido.</p>
     @if (wa) {
       <p>Último paso: envíanos el pedido por WhatsApp para confirmarlo.</p>
       <a class="wa-btn" [href]="wa" target="_blank" rel="noopener">💬 Enviar pedido por WhatsApp</a>
     } @else {<p>Te contactaremos para coordinar la entrega.</p>}
-    <a routerLink="/">Seguir comprando</a>
+    <a routerLink="/" class="again">Seguir comprando</a>
   </div>
 } @else {
+  <ol class="progress">
+    <li [class.on]="step === 'cart'" [class.done]="step === 'info'">1 · Carrito</li>
+    <li [class.on]="step === 'info'">2 · Entrega</li>
+    <li>3 · Listo</li>
+  </ol>
+
   <div class="cols2">
-    <div class="panel">
-      <h2>Tu carrito</h2>
+    <div class="panel" [class.hide-m]="step === 'info'">
+      <h2>Tu carrito @if (units()) {<small>{{ units() }} {{ units() === 1 ? 'unidad' : 'unidades' }}</small>}</h2>
       @for (i of items(); track i.p.id) {
-        <app-cart-item [product]="i.p" [qty]="i.qty"
-          (qtyChange)="cart.setQty(i.p.id, $event, i.p.stock)" (remove)="cart.remove(i.p.id)" />
-      } @empty {<p class="count">Tu carrito está vacío.</p>}
+        <app-cart-item [product]="i.p" [qty]="i.qty" (qtyChange)="cart.setQty(i.p.id, $event, i.p.stock)" (remove)="cart.remove(i.p.id)" />
+      } @empty {
+        @if (loading()) {<p class="count">Cargando…</p>}
+        @else {<div class="blank"><p>Tu carrito está vacío.</p><a routerLink="/" class="btn-p">Ver productos</a></div>}
+      }
       @if (items().length) {<div class="total"><span>Total</span><span>{{ total() | cop }}</span></div>}
     </div>
+
     @if (items().length) {
-      <app-checkout-form [initialName]="userName" [busy]="busy" [msg]="msg" [bad]="bad" (confirmed)="buy($event)" />
+      <div class="side" [class.hide-m]="step === 'cart'">
+        <button class="link" (click)="step = 'cart'">← Volver al carrito</button>
+        <app-checkout-form [initialName]="userName" [busy]="busy" [msg]="msg" [bad]="bad"
+          [units]="units()" [total]="total()" (confirmed)="buy($event)" />
+      </div>
     }
   </div>
+
+  @if (items().length && step === 'cart') {
+    <div class="sticky">
+      <div class="t"><small>Total</small><b>{{ total() | cop }}</b></div>
+      <button class="primary" (click)="next()">Continuar →</button>
+    </div>
+  }
 }
 
 <div class="panel">
   <h2>Mis pedidos</h2>
-  @for (o of orders; track o.id) {
-    <div class="row">
-      <span>#{{ o.id }} · {{ o.created_at.slice(0, 10) }}</span>
-      <app-status-badge [value]="o.status" />
-      <b>{{ o.total | cop }}</b>
-    </div>
+  @for (o of pagedOrders; track o.id) {
+    <details class="ord">
+      <summary><span>#{{ o.id }} · {{ o.created_at.slice(0, 10) }}</span><app-status-badge [value]="o.status" /><b>{{ o.total | cop }}</b></summary>
+      <ul>@for (i of o.items; track $index) {<li><span>{{ i.qty }} × {{ i.name }}</span><span>{{ i.price * i.qty | cop }}</span></li>}</ul>
+    </details>
   } @empty {<p class="count">Aún no tienes pedidos.</p>}
+  <app-paginator [total]="orders.length" [page]="ordersPage" [pageSize]="ordersPageSize" (pageChange)="ordersPage = $event" />
 </div>

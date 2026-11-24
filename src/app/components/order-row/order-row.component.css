@@ -1,1 +1,13 @@
 :host { display: block; }
+.o { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 12px; height: 100%; box-shadow: 0 2px 8px rgba(7, 19, 41, .04); }
+header, footer { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.id { font: 700 18px 'Space Grotesk', sans-serif; }
+.who { display: flex; flex-direction: column; gap: 3px; }
+.who span { color: var(--muted); font-size: 14px; }
+.contact { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
+.contact a { padding: 7px 12px; border-radius: 10px; background: var(--blue-soft); color: var(--blue-ink); font-weight: 650; font-size: 13px; text-decoration: none; }
+.contact a.wa { background: #e6f7ee; color: #126b3b; }
+ul { list-style: none; margin: 0; padding: 10px 12px; background: var(--ice); border-radius: 12px; font-size: 14px; }
+li { display: flex; justify-content: space-between; gap: 10px; padding: 2px 0; }
+footer { margin-top: auto; }
+.tot { font: 800 20px 'Space Grotesk', sans-serif; }

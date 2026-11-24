@@ -1,10 +1,19 @@
-<div class="item">
-  <app-product-image [src]="product.image" [alt]="product.name" />
-  <div>
-    <b>{{ product.name }}</b><div class="count">{{ product.price | cop }} c/u</div>
-    <div class="qty">
-      <button (click)="qtyChange.emit(qty - 1)">−</button>{{ qty }}<button (click)="qtyChange.emit(qty + 1)">+</button>
+<div class="ci">
+  <a class="im" [routerLink]="['/producto', product.id]"><app-product-image [src]="product.image" [alt]="product.name" /></a>
+  <div class="mid">
+    <a class="nm" [routerLink]="['/producto', product.id]">{{ product.name }}</a>
+    <small>{{ product.price | cop }} c/u</small>
+    <div class="stepper">
+      <button type="button" (click)="qtyChange.emit(qty - 1)" [disabled]="qty <= 1" aria-label="Menos">−</button>
+      <b>{{ qty }}</b>
+      <button type="button" (click)="qtyChange.emit(qty + 1)" [disabled]="qty >= product.stock" aria-label="Más">+</button>
     </div>
+    @if (qty >= product.stock) {<small class="max">Máximo disponible</small>}
   </div>
-  <div><b>{{ product.price * qty | cop }}</b><br><button class="danger small" (click)="remove.emit()">Quitar</button></div>
+  <div class="end">
+    <b>{{ product.price * qty | cop }}</b>
+    <button class="trash" type="button" (click)="remove.emit()" aria-label="Quitar del carrito">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-12M9 7V4h6v3" /></svg>
+    </button>
+  </div>
 </div>

@@ -2,38 +2,62 @@
   <h2>{{ editing ? 'Editar compra #' + editing.id : 'Registrar compra' }}</h2>
   <p class="sub">Una compra puede tener varios productos. Al guardar, entran al inventario (sin publicarse).</p>
 
-  @for (l of lines; track $index) {
-    <div class="line">
-      <select [(ngModel)]="l.productId">
-        <option [ngValue]="null">Producto…</option>
-        @for (p of products; track p.id) {<option [ngValue]="p.id">{{ p.name }}</option>}
-      </select>
-      <input type="number" min="1" placeholder="Uds" [(ngModel)]="l.qty">
-      <input type="number" min="0" placeholder="Costo c/u" [(ngModel)]="l.unitCost">
-      <b>{{ lineTotal(l) | cop }}</b>
-      <button class="danger small" type="button" [disabled]="lines.length < 2" (click)="removeLine($index)">✕</button>
+  <ol class="steps only-m">
+    <li [class.on]="step === 1" [class.done]="step === 2">1 · Productos</li>
+    <li [class.on]="step === 2">2 · Aportes</li>
+  </ol>
+
+  <section [class.hide-m]="step !== 1">
+    @if (!products.length) {<p class="warn">No hay productos aprobados todavía. Apruébalos en Presentación.</p>}
+    @for (l of lines; track $index) {
+      <div class="line" [class.invalid]="submitted && lineErr(l)">
+        <select [(ngModel)]="l.productId" aria-label="Producto">
+          <option [ngValue]="null">Producto…</option>
+          @for (p of availableFor($index); track p.id) {<option [ngValue]="p.id">{{ p.name }}</option>}
+        </select>
+        <input type="number" inputmode="numeric" min="1" placeholder="Uds" [(ngModel)]="l.qty" aria-label="Unidades">
+        <app-money-input [(ngModel)]="l.unitCost" placeholder="Costo c/u" label="Costo por unidad" />
+        <b class="lt">{{ lineTotal(l) | cop }}</b>
+        <button class="danger small" type="button" [disabled]="lines.length < 2" (click)="removeLine($index)" aria-label="Quitar producto">✕</button>
+        @if (submitted && lineErr(l)) {<small class="e le">{{ lineErr(l) }}</small>}
+      </div>
+    }
+    <button class="secondary small" type="button" (click)="addLine()">+ Agregar producto</button>
+
+    <div class="field" style="margin-top:14px">
+      <label>Costos extra de toda la compra (envío, impuestos)</label>
+      <app-money-input [(ngModel)]="extra" label="Costos extra" />
     </div>
-  }
-  <button class="secondary small" type="button" (click)="addLine()">+ Agregar producto</button>
+    <div class="field"><label for="b-notes">Notas</label><input id="b-notes" [(ngModel)]="notes" placeholder="Proveedor, referencia…"></div>
+    <div class="total-line"><span>Costo total de la compra</span><b>{{ total | cop }}</b></div>
+  </section>
 
-  <div class="field" style="margin-top:12px"><label>Costos extra de toda la compra (envío, impuestos)</label><input type="number" min="0" [(ngModel)]="extra"></div>
-  <div class="field"><label>Notas</label><input [(ngModel)]="notes" placeholder="Proveedor, referencia…"></div>
-  <div class="total-line"><span>Costo total de la compra</span><b>{{ total | cop }}</b></div>
-
-  <h3 class="mini">¿Quién puso el dinero?</h3>
-  @for (a of admins; track a.id) {
-    <div class="contrib"><span>{{ a.name }}</span>
-      <input type="number" min="0" [ngModel]="amounts[a.id] ?? 0" (ngModelChange)="amounts[a.id] = $event"></div>
-  }
-  <div class="check-line" [class.bad]="diff !== 0">
-    Aportado {{ sum | cop }} ·
-    @if (diff === 0) {✓ cuadra} @else if (diff > 0) {faltan {{ absDiff | cop }}} @else {sobran {{ absDiff | cop }}}
-  </div>
-  <button class="secondary small" type="button" (click)="split()">Dividir en partes iguales</button>
+  <section [class.hide-m]="step !== 2">
+    <p class="recap only-m">Total de la compra: <b>{{ total | cop }}</b></p>
+    <h3 class="mini">¿Quién puso el dinero?</h3>
+    @for (a of admins; track a.id) {
+      <div class="contrib">
+        <span>{{ a.name }}</span>
+        <div class="cin">
+          <app-money-input [ngModel]="amounts[a.id] ?? null" (ngModelChange)="amounts[a.id] = $event" [label]="'Aporte de ' + a.name" />
+          @if (diff > 0) {<button class="link-btn" type="button" (click)="fill(a)">Poner el resto</button>}
+        </div>
+      </div>
+    }
+    <div class="check-line" [class.bad]="diff !== 0">
+      Aportado {{ sum | cop }} ·
+      @if (diff === 0) {✓ cuadra} @else if (diff > 0) {faltan {{ absDiff | cop }}} @else {sobran {{ absDiff | cop }}}
+    </div>
+    <button class="secondary small" type="button" (click)="split()">Dividir en partes iguales</button>
+  </section>
 
   @if (err || msg) {<p class="err">{{ err || msg }}</p>}
-  <div class="row" style="border:0;margin-top:12px">
-    <button class="primary" [disabled]="busy" (click)="submit()">{{ editing ? 'Guardar cambios' : 'Registrar compra' }}</button>
+  <div class="actions">
+    @if (step === 2) {<button class="secondary only-m" type="button" (click)="back()">← Volver</button>}
+    @if (step === 1) {<button class="primary only-m" type="button" (click)="next()">Continuar →</button>}
+    <button class="primary" [class.hide-m]="step !== 2" [disabled]="busy" (click)="submit()">
+      {{ busy ? 'Guardando…' : editing ? 'Guardar cambios' : 'Registrar compra' }}
+    </button>
     @if (editing) {<button class="secondary" (click)="cancelled.emit()">Cancelar</button>}
   </div>
 </div>

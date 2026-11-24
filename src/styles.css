@@ -111,3 +111,11 @@ app-product-image, .ph { background: radial-gradient(circle at 50% 30%, #fff 0%,
   .tabs { width: 100%; }
 }
 @media print { app-header, app-bottom-nav { display: none !important; } }
+/* Paso 4 */
+.ci img, .ci .ph { width: 84px; height: 84px; object-fit: contain; display: block; font-size: 30px; }
+.ci img { mix-blend-mode: multiply; }
+@media (max-width: 420px) { .ci img, .ci .ph { width: 68px; height: 68px; } }
+/* Paso 6 y 7 */
+.field.invalid input, .field.invalid textarea, .field.invalid select { border-color: var(--red); background: #fff8f8; }
+.e { color: var(--red); font-size: 13px; }
+@media (max-width: 720px) { .app.with-footer { padding-bottom: 14px; } }

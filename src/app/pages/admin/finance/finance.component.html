@@ -1,59 +1,61 @@
 @if (summary; as s) {
-<div class="panel">
-  <h2>Finanzas</h2>
-  <div class="sum">
-    <app-stat-card label="Invertido" [value]="s.invested | cop" />
-    <app-stat-card label="Ingresos cobrados" [value]="s.revenue | cop" />
-    <app-stat-card label="Ganancia" [value]="s.profit | cop" [tone]="s.profit >= 0 ? 'ok' : 'err'" />
-    <app-stat-card label="Caja (ingresos − invertido)" [value]="s.cash | cop" [tone]="s.cash >= 0 ? 'ok' : 'err'" />
-    <app-stat-card label="Inventario al costo" [value]="s.inventory | cop" />
-    <app-stat-card label="Por cobrar" [value]="s.receivable | cop" />
+  <div class="panel">
+    <h2>Finanzas</h2>
+    <div class="sum">
+      <app-stat-card label="Invertido" [value]="s.invested | cop" />
+      <app-stat-card label="Ingresos cobrados" [value]="s.revenue | cop" />
+      <app-stat-card label="Ganancia" [value]="s.profit | cop" [tone]="s.profit >= 0 ? 'ok' : 'err'" />
+      <app-stat-card label="Caja (ingresos − invertido)" [value]="s.cash | cop" [tone]="s.cash >= 0 ? 'ok' : 'err'" />
+      <app-stat-card label="Inventario al costo" [value]="s.inventory | cop" />
+      <app-stat-card label="Por cobrar" [value]="s.receivable | cop" />
+    </div>
+    <p class="sub">Cobrado = pedidos en estado <b>pagado</b> o <b>entregado</b>. Como el pago es contra entrega, marca el pedido como entregado cuando recibas el dinero.</p>
   </div>
-  <p class="sub">Cobrado = pedidos en estado <b>pagado</b> o <b>entregado</b>. Como el pago es contra entrega, marca el
-    pedido como entregado cuando recibas el dinero.</p>
-</div>
 }
 
-<div class="cols">
-  <div>
-    <app-purchase-form [products]="approved" [admins]="admins" [busy]="busyBuy" [msg]="buyMsg"
-      [purchase]="editingPurchase" (save)="buy($event)" (cancelled)="editingPurchase = null" />
-    <app-payout-form [admins]="admins" [balances]="summary?.admins ?? []" [busy]="busyPay" [msg]="payMsg"
-      [payout]="editingPayout" (save)="pay($event)" (cancelled)="editingPayout = null" />
-  </div>
-  <div>
-    <div class="panel">
-      <h2>Saldo por administrador</h2><app-balance-table [rows]="summary?.admins ?? []" />
-    </div>
+<app-filter-chips class="only-m" [options]="views" [selected]="view" (selectedChange)="view = $event" />
 
-    <div class="panel">
-      <h2>Compras</h2>
-      @for (p of purchases; track p.id) {
+<section [class.off]="view !== 'saldos'">
+  <div class="panel"><h2>Saldo por administrador</h2><app-balance-table [rows]="summary?.admins ?? []" /></div>
+</section>
+
+<section class="cols" [class.off]="view !== 'compras'">
+  <app-purchase-form [products]="approved" [admins]="admins" [busy]="busyBuy" [msg]="buyMsg"
+    [purchase]="editingPurchase" (save)="buy($event)" (cancelled)="editingPurchase = null" />
+  <div class="panel">
+    <div class="bar">
+      <div><h2>Compras</h2><span class="count">{{ filteredPurchases.length }} de {{ purchases.length }}</span></div>
+      <app-search-box placeholder="Buscar producto o nota…" [value]="pq" (valueChange)="setPq($event)" />
+    </div>
+    @for (p of pagedPurchases; track p.id) {
       <div class="row">
         <span>
           <b>Compra #{{ p.id }}</b> · {{ p.created_at.slice(0, 10) }} @if (p.notes) { · {{ p.notes }} }<br>
-          <small>@for (i of p.items; track i.product_id) { <span>{{ i.qty }} × {{ i.product }} ({{ i.unit_cost | cop
-              }}); </span> } @if (p.extra_cost) { <span>extra {{ p.extra_cost | cop }}</span> }</small><br>
-          <small>Aportes: @for (c of p.contributions; track c.user_id) { <span>{{ c.name }} {{ c.amount | cop }};
-            </span> }</small>
+          <small>@for (i of p.items; track i.product_id) { <span>{{ i.qty }} × {{ i.product }} ({{ i.unit_cost | cop }}); </span> } @if (p.extra_cost) { <span>extra {{ p.extra_cost | cop }}</span> }</small><br>
+          <small>Aportes: @for (c of p.contributions; track c.user_id) { <span>{{ c.name }} {{ c.amount | cop }}; </span> }</small>
         </span>
         <span class="acts"><b>{{ p.total | cop }}</b>
           <button class="secondary small" (click)="editPurchase(p)">Editar</button>
           <button class="danger small" (click)="removePurchase(p)">Borrar</button></span>
       </div>
-      } @empty {<p class="count">Aún no has registrado compras.</p>}
-    </div>
+    } @empty {<p class="count">{{ purchases.length ? 'Ninguna compra coincide.' : 'Aún no has registrado compras.' }}</p>}
+    <app-paginator [total]="filteredPurchases.length" [page]="pPage" [pageSize]="pageSize" (pageChange)="pPage = $event" />
+  </div>
+</section>
 
-    <div class="panel">
-      <h2>Devoluciones</h2>
-      @for (d of payouts; track d.id) {
+<section class="cols" [class.off]="view !== 'devol'">
+  <app-payout-form [admins]="admins" [balances]="summary?.admins ?? []" [busy]="busyPay" [msg]="payMsg"
+    [payout]="editingPayout" (save)="pay($event)" (cancelled)="editingPayout = null" />
+  <div class="panel">
+    <h2>Devoluciones</h2>
+    @for (d of pagedPayouts; track d.id) {
       <div class="row">
         <span><b>{{ d.name }}</b><br><small>{{ d.created_at.slice(0, 10) }} · {{ d.note || 'Sin nota' }}</small></span>
         <span class="acts"><b>{{ d.amount | cop }}</b>
           <button class="secondary small" (click)="editPayout(d)">Editar</button>
           <button class="danger small" (click)="removePayout(d)">Borrar</button></span>
       </div>
-      } @empty {<p class="count">Aún no hay devoluciones.</p>}
-    </div>
+    } @empty {<p class="count">Aún no hay devoluciones.</p>}
+    <app-paginator [total]="payouts.length" [page]="dPage" [pageSize]="pageSize" (pageChange)="dPage = $event" />
   </div>
-</div>
+</section>

@@ -4,16 +4,20 @@
     <tbody>
       @for (r of rows; track r.id) {
         <tr>
-          <td>{{ r.name }}</td><td>{{ r.invested | cop }}</td><td>{{ r.entitled | cop }}</td>
-          <td>{{ r.profit | cop }}</td><td>{{ r.paid | cop }}</td>
-          <td class="pend" [class.zero]="r.pending <= 0">{{ r.pending | cop }}</td>
+          <td class="nm" data-label="Administrador">{{ r.name }}</td>
+          <td data-label="Puso">{{ r.invested | cop }}</td>
+          <td data-label="Le corresponde">{{ r.entitled | cop }}</td>
+          <td data-label="Ganancia">{{ r.profit | cop }}</td>
+          <td data-label="Recibido">{{ r.paid | cop }}</td>
+          <td class="pend" [class.zero]="r.pending <= 0" data-label="Pendiente">{{ r.pending | cop }}</td>
         </tr>
       } @empty {<tr><td colspan="6">Aún no hay administradores con compras.</td></tr>}
     </tbody>
     @if (rows.length) {
       <tfoot><tr>
-        <td>Total</td><td>{{ totals.invested | cop }}</td><td>{{ totals.entitled | cop }}</td>
-        <td>{{ totals.profit | cop }}</td><td>{{ totals.paid | cop }}</td><td>{{ totals.pending | cop }}</td>
+        <td class="nm" data-label="Total">Total</td><td data-label="Puso">{{ totals.invested | cop }}</td>
+        <td data-label="Le corresponde">{{ totals.entitled | cop }}</td><td data-label="Ganancia">{{ totals.profit | cop }}</td>
+        <td data-label="Recibido">{{ totals.paid | cop }}</td><td data-label="Pendiente">{{ totals.pending | cop }}</td>
       </tr></tfoot>
     }
   </table>

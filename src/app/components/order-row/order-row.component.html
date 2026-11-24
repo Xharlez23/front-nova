@@ -1,10 +1,21 @@
-<div class="row">
-  <span>
-    <b>#{{ order.id }}</b> {{ order.customer }} · {{ order.phone }} · {{ order.city }}<br>
-    <small>{{ order.address }} — @for (i of order.items; track $index) { <span>{{ i.qty }}× {{ i.name }}; </span> }</small>
-  </span>
-  <b>{{ order.total | cop }}</b>
-  <select [ngModel]="order.status" (ngModelChange)="statusChange.emit($event)">
-    @for (s of statuses; track s) {<option [value]="s">{{ s }}</option>}
-  </select>
-</div>
+<article class="o">
+  <header>
+    <div><b class="id">#{{ order.id }}</b> <small>{{ order.created_at.slice(0, 10) }}</small></div>
+    <app-status-badge [value]="order.status" />
+  </header>
+  <div class="who">
+    <b>{{ order.customer }}</b>
+    <span>{{ order.city }} · {{ order.address }}</span>
+    <span class="contact">
+      <a [href]="'tel:' + order.phone">📞 {{ order.phone }}</a>
+      @if (wa) {<a class="wa" [href]="wa" target="_blank" rel="noopener">💬 WhatsApp</a>}
+    </span>
+  </div>
+  <ul>@for (i of order.items; track $index) {<li><span>{{ i.qty }} × {{ i.name }}</span><span>{{ i.price * i.qty | cop }}</span></li>}</ul>
+  <footer>
+    <b class="tot">{{ order.total | cop }}</b>
+    <select [ngModel]="order.status" (ngModelChange)="statusChange.emit($event)" aria-label="Cambiar estado">
+      @for (s of statuses; track s) {<option [value]="s">{{ s }}</option>}
+    </select>
+  </footer>
+</article>

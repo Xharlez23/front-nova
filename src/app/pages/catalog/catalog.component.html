@@ -1,19 +1,56 @@
-<section class="hero-shop">
-  <div><small class="kicker">NUEVOS GADGETS</small><h1>Gadgets y accesorios</h1><p>Tecnología seleccionada para ti.</p></div>
-  <input placeholder="Buscar gadgets, accesorios…" [(ngModel)]="q">
+<section class="hero">
+  <div class="hero-txt">
+    <small class="kicker">NOVA · TECNOLOGÍA A TU ALCANCE</small>
+    <h1>Descubre lo último en <span>tecnología</span></h1>
+    <p class="lead">Gadgets y accesorios seleccionados. Pagas al recibir.</p>
+    <button class="ghost" (click)="scrollTop()">Compra ahora →</button>
+  </div>
+  @if (featured.length) {
+    <div class="hero-art" aria-hidden="true">
+      @for (f of featured; track f.id; let i = $index) {<div class="tile" [style.--r]="(i - 1) * 7 + 'deg'"><img [src]="f.image" alt=""></div>}
+    </div>
+  }
 </section>
 
-<div class="toolbar">
-  <div class="chips">@for (c of categories; track c) {<button class="chip" [class.on]="c === cat" (click)="cat = c">{{ c }}</button>}</div>
-  <select [(ngModel)]="sort">
-    <option value="new">Más recientes</option>
-    <option value="lo">Precio: menor a mayor</option>
-    <option value="hi">Precio: mayor a menor</option>
-  </select>
+<div #top class="anchor"></div>
+<div class="search">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="M20 20l-3.5-3.5" /></svg>
+  <input type="search" placeholder="Buscar gadgets, accesorios…" [ngModel]="q" (ngModelChange)="setQ($event)">
+  @if (q) {<button class="x" (click)="setQ('')" aria-label="Borrar búsqueda">✕</button>}
 </div>
 
-@if (error) {<p class="err">{{ error }}</p>} @else if (loading) {<p class="count">Cargando…</p>} @else {<p class="count">{{ list.length }} productos</p>}
-<div class="grid">
-  @for (p of list; track p.id) {<app-product-card [product]="p" (add)="add($event)" />}
-  @empty { @if (!loading && !error) {<div class="empty">No hay productos para mostrar.</div>} }
+<app-category-strip [categories]="categories" [selected]="cat" (picked)="setCat($event)" />
+
+<div class="toolbar">
+  <span class="count">
+    @if (error) {<span class="err">{{ error }}</span>} @else if (loading) {Cargando…} @else {{{ filtered.length }} producto{{ filtered.length === 1 ? '' : 's' }}}
+  </span>
+  <div class="tools">
+    <button class="chip" [class.on]="onlyStock" (click)="toggleStock()">Solo disponibles</button>
+    <select [ngModel]="sort" (ngModelChange)="setSort($event)" aria-label="Ordenar">
+      <option value="new">Más recientes</option>
+      <option value="lo">Precio: menor a mayor</option>
+      <option value="hi">Precio: mayor a menor</option>
+      <option value="az">Nombre A–Z</option>
+    </select>
+    @if (hasFilters) {<button class="link" (click)="clear()">Limpiar</button>}
+  </div>
 </div>
+
+<div class="grid">
+  @if (loading) {
+    @for (s of skeletons; track s) {<div class="card"><div class="sk sk-img"></div><div class="cb"><i class="sk sk-l"></i><i class="sk sk-l w60"></i></div></div>}
+  } @else {
+    @for (p of paged; track p.id) {<app-product-card [product]="p" (add)="add($event)" />}
+    @empty {
+      @if (!error) {
+        <div class="empty">
+          <p>No encontramos productos con esos filtros.</p>
+          @if (hasFilters) {<button class="primary small" (click)="clear()">Limpiar filtros</button>}
+        </div>
+      }
+    }
+  }
+</div>
+
+<app-paginator [total]="filtered.length" [page]="page" [pageSize]="pageSize" (pageChange)="goPage($event)" />

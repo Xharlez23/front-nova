@@ -1,18 +1,23 @@
 <div class="cols">
-  <app-product-form [product]="editing" [busy]="busy" [msg]="msg"
-    (save)="onSave($event)" (bulk)="onBulk($event)" (cancelled)="editing = null" />
+  <div class="formwrap" [class.collapsed]="!showForm && !editing">
+    <app-product-form [categories]="cats" [product]="editing" [busy]="busy" [msg]="msg" (save)="onSave($event)" (bulk)="onBulk($event)" (cancelled)="cancel()" />
+  </div>
+
   <div class="panel">
     <div class="bar">
-      <div><h2>Productos</h2><span class="count">{{ shown.length }} productos</span></div>
-      <select [(ngModel)]="filter">
-        <option value="all">Todos</option><option value="pendiente">Pendientes</option>
-        <option value="aprobado">Aprobados</option><option value="rechazado">Rechazados</option><option value="inventario">En Inventario</option>
-      </select>
+      <div><h2>Productos</h2><span class="count">{{ loading ? 'Cargando…' : filtered.length + ' de ' + items.length }}</span></div>
+      <button class="primary small newbtn" (click)="toggleForm()">{{ showForm ? 'Cerrar formulario' : '+ Nuevo' }}</button>
+      <app-search-box placeholder="Buscar producto o categoría…" [value]="q" (valueChange)="setQ($event)" />
     </div>
+    <app-filter-chips [options]="options" [selected]="stage" (selectedChange)="setStage($event)" />
+
     <div class="grid">
-      @for (p of shown; track p.id) {
+      @for (p of paged; track p.id) {
         <app-admin-product-card [product]="p" (edit)="edit($event)" (remove)="remove($event)" (update)="update(p, $event)" />
-      } @empty {<div class="empty">Todavía no hay productos.</div>}
+      } @empty {
+        @if (!loading) {<div class="empty">{{ items.length ? 'Ningún producto coincide con los filtros.' : 'Todavía no hay productos.' }}</div>}
+      }
     </div>
+    <app-paginator [total]="filtered.length" [page]="page" [pageSize]="pageSize" (pageChange)="page = $event" />
   </div>
 </div>

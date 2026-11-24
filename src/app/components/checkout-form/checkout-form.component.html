@@ -1,14 +1,37 @@
 <div class="panel">
   <h2>Datos de entrega</h2>
-  <div class="field"><label>Nombre completo *</label><input [(ngModel)]="form.customer"></div>
-  <div class="field"><label>Celular *</label><input [(ngModel)]="form.phone"></div>
-  <div class="field"><label>Ciudad *</label><input [(ngModel)]="form.city"></div>
-  <div class="field"><label>Dirección *</label><input [(ngModel)]="form.address"></div>
-  <div class="field"><label>Notas</label><textarea rows="2" [(ngModel)]="form.notes"></textarea></div>
+
+  <div class="field" [class.invalid]="submitted && !form.customer.trim()">
+    <label for="c-name">Nombre completo *</label>
+    <input id="c-name" name="customer" autocomplete="name" [(ngModel)]="form.customer">
+    @if (submitted && !form.customer.trim()) {<small class="e">Escribe tu nombre</small>}
+  </div>
+  <div class="field" [class.invalid]="submitted && !phoneOk">
+    <label for="c-phone">Celular *</label>
+    <input id="c-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="300 123 4567" [(ngModel)]="form.phone">
+    @if (submitted && !phoneOk) {<small class="e">Escribe un número de celular válido</small>}
+  </div>
+  <div class="field" [class.invalid]="submitted && !form.city.trim()">
+    <label for="c-city">Ciudad *</label>
+    <input id="c-city" name="city" autocomplete="address-level2" [(ngModel)]="form.city">
+    @if (submitted && !form.city.trim()) {<small class="e">Escribe tu ciudad</small>}
+  </div>
+  <div class="field" [class.invalid]="submitted && !form.address.trim()">
+    <label for="c-addr">Dirección *</label>
+    <input id="c-addr" name="address" autocomplete="street-address" placeholder="Calle, número, barrio, apartamento…" [(ngModel)]="form.address">
+    @if (submitted && !form.address.trim()) {<small class="e">Escribe tu dirección</small>}
+  </div>
+  <div class="field">
+    <label for="c-notes">Notas (opcional)</label>
+    <textarea id="c-notes" name="notes" rows="2" placeholder="Horario, referencias del lugar…" [(ngModel)]="form.notes"></textarea>
+  </div>
+
   <div class="pay">
     <span class="pay-ic">💵</span>
     <div><b>Pago contra entrega</b><small>Pagas cuando recibes tu pedido.</small></div>
   </div>
-  @if (err) {<p class="err">{{ err }}</p>} @else if (msg) {<p [class]="bad ? 'err' : 'ok'">{{ msg }}</p>}
-  <button class="primary" style="width:100%" [disabled]="busy" (click)="send()">Confirmar pedido</button>
+  <div class="sumline"><span>{{ units }} {{ units === 1 ? 'unidad' : 'unidades' }}</span><b>{{ total | cop }}</b></div>
+
+  @if (msg) {<p [class]="bad ? 'err' : 'ok'">{{ msg }}</p>}
+  <button class="primary" style="width:100%;padding:14px" [disabled]="busy" (click)="send()">{{ busy ? 'Enviando…' : 'Confirmar pedido' }}</button>
 </div>

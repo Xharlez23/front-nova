@@ -1,0 +1,28 @@
+:host { display: block; margin-top: 30px; }
+.f { background: linear-gradient(100deg, var(--navy-900), var(--navy-800) 70%, #0b2a66); color: #c9d9f8; border-top: 1px solid rgba(98, 156, 248, .25); }
+.wrap { max-width: 1280px; margin: auto; padding: 36px 22px 24px; display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 28px; }
+.col { display: flex; flex-direction: column; align-items: flex-start; gap: 9px; }
+.col p { margin: 0; max-width: 280px; line-height: 1.5; }
+.col small { color: #8fa7d3; }
+h4 { margin: 0 0 4px; color: #fff; font-size: 13px; letter-spacing: .1em; text-transform: uppercase; }
+.col a { color: #dbe7ff; text-decoration: none; }
+.col a:hover { color: #fff; }
+.col a.support { display: inline-flex; align-items: center; gap: 8px; background: var(--accent); color: var(--navy-900); font-weight: 700; padding: 11px 18px; border-radius: 12px; box-shadow: 0 6px 18px rgba(98, 156, 248, .35); }
+.col a.support:hover { background: #7fb0fa; color: var(--navy-900); }
+.wave { width: 88px; height: 40px; fill: none; stroke: #fff; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+.wave .ring { stroke: var(--accent); stroke-width: 4; }
+.wave .dot { fill: var(--accent); stroke: none; }
+.social { display: flex; gap: 10px; flex-wrap: wrap; }
+.sc { width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; background: rgba(98, 156, 248, .16); border: 1px solid rgba(98, 156, 248, .45); color: #fff; transition: background .15s; }
+a.sc:hover { background: rgba(98, 156, 248, .35); }
+.sc svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.sc.soon { background: transparent; border: 1.5px dashed rgba(98, 156, 248, .5); color: #7b97cf; }
+.legal { border-top: 1px solid rgba(98, 156, 248, .18); text-align: center; padding: 14px 22px; font-size: 13px; color: #8fa7d3; }
+
+@media (max-width: 900px) { .wrap { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 720px) {
+  .wrap { grid-template-columns: 1fr; padding: 28px 18px 8px; gap: 22px; }
+  .legal { padding-bottom: calc(100px + env(safe-area-inset-bottom)); }  /* deja libre la barra inferior */
+  :host(.tall) .legal { padding-bottom: calc(170px + env(safe-area-inset-bottom)); }  /* y la barra de compra fija */
+}
+@media print { :host { display: none; } }

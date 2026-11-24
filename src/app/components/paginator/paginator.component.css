@@ -1,0 +1,17 @@
+:host { display: block; }
+.wrap { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin: 22px 0 6px; }
+.info { color: var(--muted); font-size: 13px; }
+.pg { display: flex; align-items: center; gap: 6px; }
+.nums { display: flex; align-items: center; gap: 6px; }
+.b { min-width: 40px; height: 40px; padding: 0 10px; border-radius: 12px; background: #fff; border: 1px solid var(--line); color: var(--blue-ink); font-weight: 700; }
+.b:hover:not(:disabled) { border-color: var(--accent); background: var(--blue-soft); }
+.b.on { background: linear-gradient(135deg, var(--blue-700), var(--navy-800)); border-color: transparent; color: #fff; box-shadow: 0 6px 14px rgba(0, 28, 79, .28); }
+.dots { color: var(--muted); padding: 0 4px; }
+.short { display: none; font-weight: 700; color: var(--blue-ink); padding: 0 8px; }
+@media (max-width: 560px) {
+  .wrap { justify-content: center; }
+  .info { width: 100%; text-align: center; }
+  .nums { display: none; }
+  .short { display: inline; }
+  .b { min-width: 48px; height: 48px; }  /* botones más grandes para el pulgar */
+}

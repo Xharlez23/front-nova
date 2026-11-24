@@ -1,3 +1,5 @@
 <app-header />
-<main class="app"><router-outlet /></main>
+<main class="app" [class.with-footer]="!inAdmin()"><router-outlet /></main>
+@if (!inAdmin()) {<app-footer [class.tall]="tall()" />}
 <app-bottom-nav />
+<app-toast />

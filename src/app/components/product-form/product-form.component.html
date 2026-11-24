@@ -1,26 +1,61 @@
 <div class="panel">
   <h2>{{ f.id ? 'Editar producto' : 'Agregar producto' }}</h2>
   <p class="sub">Solo los datos necesarios para decidir y vender.</p>
-  <div class="field"><label>Nombre *</label><input [(ngModel)]="f.name"></div>
-  <div class="field"><label>Categoría</label><input [(ngModel)]="f.category" placeholder="Audio, Cargadores…"></div>
+
+  <div class="field" [class.invalid]="submitted && nameErr">
+    <label for="p-name">Nombre *</label>
+    <input id="p-name" autocomplete="off" [(ngModel)]="f.name">
+    @if (submitted && nameErr) {<small class="e">{{ nameErr }}</small>}
+  </div>
+  <div class="field">
+    <label for="p-cat">Categoría</label>
+    <input id="p-cat" list="p-cats" autocomplete="off" placeholder="Audio, Cargadores…" [(ngModel)]="f.category">
+    <datalist id="p-cats">@for (c of categories; track c) {<option [value]="c"></option>}</datalist>
+  </div>
+
   <div class="two">
-    <div class="field"><label>Costo (COP)</label><input type="number" [(ngModel)]="f.cost" [disabled]="!!f.acquired"></div>
-    <div class="field"><label>Venta (COP) *</label><input type="number" [(ngModel)]="f.price"></div>
+    <div class="field">
+      <label>Costo (COP)</label>
+      <app-money-input [(ngModel)]="f.cost" [disabled]="!!f.acquired" label="Costo" />
+      @if (f.acquired) {<small>Viene de tus compras</small>}
+    </div>
+    <div class="field" [class.invalid]="submitted && priceErr">
+      <label>Venta (COP) *</label>
+      <app-money-input [(ngModel)]="f.price" [invalid]="!!(submitted && priceErr)" label="Precio de venta" />
+      @if (submitted && priceErr) {<small class="e">{{ priceErr }}</small>}
+    </div>
   </div>
-  <div class="field"><label>Stock</label><input type="number" [(ngModel)]="f.stock"></div>
-  <div class="field"><label>URL del producto (proveedor)</label><input [(ngModel)]="f.source_url" placeholder="https://…"></div>
-  <div class="field"><label>Descripción</label><textarea rows="2" [(ngModel)]="f.description"></textarea></div>
-  <div class="field"><label>Imagen principal</label>
+  @if (margin !== null) {<p class="margin" [class.neg]="profit < 0">Ganancia por unidad: <b>{{ profit | cop }}</b> ({{ margin }}%)</p>}
+
+  <div class="field">
+    <label for="p-stock">Stock</label>
+    <input id="p-stock" type="number" inputmode="numeric" min="0" [(ngModel)]="f.stock">
+  </div>
+  <div class="field" [class.invalid]="submitted && urlErr">
+    <label for="p-url">URL del producto (proveedor)</label>
+    <input id="p-url" type="url" inputmode="url" autocomplete="off" placeholder="https://…" [(ngModel)]="f.source_url">
+    @if (submitted && urlErr) {<small class="e">{{ urlErr }}</small>}
+  </div>
+  <div class="field">
+    <label for="p-desc">Descripción</label>
+    <textarea id="p-desc" rows="3" [(ngModel)]="f.description"></textarea>
+  </div>
+  <div class="field">
+    <label>Imagen principal</label>
     <input type="file" accept="image/*" (change)="onFile($event)">
-    @if (f.image) {<img [src]="f.image" alt="" style="max-height:90px;object-fit:contain">}
+    @if (f.image) {
+      <div class="prev"><img [src]="f.image" alt=""><button class="danger small" type="button" (click)="removeImage()">Quitar imagen</button></div>
+    }
   </div>
-  <label><input type="checkbox" [(ngModel)]="f.active"> <p class="sub">Se publica desde la lista de productos, cuando ya esté en inventario.</p></label>
-  @if (err || msg) {<p class="err">{{ err || msg }}</p>}
-  <div class="row" style="border:0">
-    <button class="primary" [disabled]="busy" (click)="submit()">Guardar</button>
+  <p class="sub">Se publica desde la lista de productos, cuando ya esté en inventario.</p>
+
+  @if (msg) {<p class="err">{{ msg }}</p>}
+  <div class="actions">
+    <button class="primary" [disabled]="busy" (click)="submit()">{{ busy ? 'Guardando…' : 'Guardar' }}</button>
     @if (f.id) {<button class="secondary" (click)="cancelled.emit()">Cancelar</button>}
   </div>
-  <hr style="border:0;border-top:1px solid var(--line);margin:16px 0">
+
+  <hr>
   <h2>Carga masiva de imágenes</h2>
   <p class="sub">Cada imagen crea un producto oculto para completar después.</p>
   <input type="file" accept="image/*" multiple [disabled]="busy" (change)="onBulk($event)">

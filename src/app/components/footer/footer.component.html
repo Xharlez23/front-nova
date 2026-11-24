@@ -1,0 +1,44 @@
+<footer class="f">
+  <div class="wrap">
+    <div class="col">
+      <svg class="wave" viewBox="0 0 128 58" aria-label="Nova">
+        <path d="M6 50 L24 18 Q30 8 36 18 L56 46 Q64 56 72 46 L92 18 Q98 8 104 18 L122 50" />
+        <circle class="ring" cx="64" cy="28" r="9" />
+        <circle class="dot" cx="98" cy="35" r="3.6" />
+      </svg>
+      <p>Tecnología a tu alcance. Gadgets y accesorios seleccionados, con pago contra entrega.</p>
+    </div>
+
+    <div class="col">
+      <h4>Contacto</h4>
+      <a [href]="tel">📞 {{ store.phoneLabel }}</a>
+      @if (waOk) {<a [href]="chat" target="_blank" rel="noopener">💬 Escríbenos por WhatsApp</a>}
+      <small>Atendemos por llamada y WhatsApp.</small>
+    </div>
+
+    <div class="col">
+      <h4>Ayuda</h4>
+      @if (waOk) {<a class="support" [href]="support" target="_blank" rel="noopener">🛟 Soporte</a>}
+      <a routerLink="/carrito">Mi carrito</a>
+      <a routerLink="/login">Mi cuenta</a>
+    </div>
+
+    <div class="col">
+      <h4>Síguenos</h4>
+      <div class="social">
+        @for (s of store.socials; track s.key) {
+          @if (s.url) {
+            <a class="sc" [href]="s.url" target="_blank" rel="noopener" [attr.aria-label]="s.name">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path [attr.d]="icon(s.key)" /></svg>
+            </a>
+          } @else {
+            <span class="sc soon" [title]="s.name + ' · próximamente'">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path [attr.d]="icon(s.key)" /></svg>
+            </span>
+          }
+        }
+      </div>
+    </div>
+  </div>
+  <div class="legal">© {{ year }} {{ store.name }} · Pago contra entrega</div>
+</footer>

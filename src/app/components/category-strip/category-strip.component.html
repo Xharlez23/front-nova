@@ -1,0 +1,8 @@
+<div class="strip">
+  @for (c of categories; track c) {
+    <button class="cat" [class.on]="c === selected" (click)="picked.emit(c)">
+      <span class="circle"><svg viewBox="0 0 24 24" aria-hidden="true"><path [attr.d]="icon(c)" /></svg></span>
+      <span class="lb">{{ c }}</span>
+    </button>
+  }
+</div>

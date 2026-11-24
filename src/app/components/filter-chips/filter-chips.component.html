@@ -1,0 +1,7 @@
+<div class="chips">
+  @for (o of options; track o.key) {
+    <button class="chip" type="button" [class.on]="o.key === selected" (click)="selectedChange.emit(o.key)">
+      {{ o.label }} @if (o.count !== undefined) {<i>{{ o.count }}</i>}
+    </button>
+  }
+</div>

@@ -1,0 +1,16 @@
+@if (pages > 1) {
+  <nav class="wrap" aria-label="Paginación">
+    <span class="info">{{ from }}–{{ to }} de {{ total }}</span>
+    <div class="pg">
+      <button class="b" [disabled]="page === 1" (click)="go(page - 1)" aria-label="Anterior">‹</button>
+      <span class="nums">
+        @for (p of items; track $index) {
+          @if (p === '…') {<span class="dots">…</span>}
+          @else {<button class="b" [class.on]="p === page" (click)="go(+p)">{{ p }}</button>}
+        }
+      </span>
+      <span class="short">{{ page }} / {{ pages }}</span>
+      <button class="b" [disabled]="page === pages" (click)="go(page + 1)" aria-label="Siguiente">›</button>
+    </div>
+  </nav>
+}

@@ -1,0 +1,8 @@
+:host { display: block; }
+app-search-box { flex: 1; min-width: 220px; max-width: 360px; }
+.newbtn { display: none; }
+@media (max-width: 900px) {
+  .formwrap.collapsed { display: none; }
+  .newbtn { display: inline-block; }
+  app-search-box { max-width: none; width: 100%; flex-basis: 100%; }
+}

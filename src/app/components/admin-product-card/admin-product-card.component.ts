@@ -3,7 +3,7 @@ import { CopPipe } from '../../shared/cop.pipe';
 import { Product } from '../../shared/models';
 import { ProductImageComponent } from '../product-image/product-image.component';
 import { StatusBadgeComponent } from '../status-badge/status-badge.component';
-
+import { STAGE_LABEL, stageOf } from '../../shared/stage';
 @Component({
   selector: 'app-admin-product-card',
   imports: [CopPipe, ProductImageComponent, StatusBadgeComponent],
@@ -15,11 +15,6 @@ export class AdminProductCardComponent {
   @Output() edit = new EventEmitter<Product>();
   @Output() remove = new EventEmitter<Product>();
   @Output() update = new EventEmitter<Partial<Product>>();
-  get stage() {
-  const p = this.product;
-  if (p.eval_status === 'rechazado') return { key: 'rechazado', label: 'Rechazado' };
-  if (p.eval_status !== 'aprobado' && p.eval_status !== 'inventario') return { key: 'pendiente', label: 'Pendiente' };
-  if (!p.acquired) return { key: 'aprobado', label: 'Aprobado · por comprar' };
-  return p.active ? { key: 'publicado', label: 'Publicado' } : { key: 'inventario', label: 'En inventario' };
-}
+ 
+get stage() { const key = stageOf(this.product); return { key, label: STAGE_LABEL[key] }; }
 }

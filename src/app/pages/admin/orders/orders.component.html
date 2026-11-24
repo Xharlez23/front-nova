@@ -1,6 +1,13 @@
 <div class="panel">
-  <h2>Pedidos</h2>
-  @for (o of orders; track o.id) {
-    <app-order-row [order]="o" [statuses]="statuses" (statusChange)="setStatus(o, $event)" />
-  } @empty {<p class="count">No hay pedidos.</p>}
+  <div class="bar">
+    <div><h2>Pedidos</h2><span class="count">{{ loading ? 'Cargando…' : filtered.length + ' de ' + orders.length }}</span></div>
+    <app-search-box placeholder="Buscar por #, cliente, celular o ciudad…" [value]="q" (valueChange)="setQ($event)" />
+  </div>
+  <app-filter-chips [options]="options" [selected]="status" (selectedChange)="setStatus($event)" />
 </div>
+
+<div class="list">
+  @for (o of paged; track o.id) {<app-order-row [order]="o" [statuses]="statuses" (statusChange)="setOrderStatus(o, $event)" />}
+  @empty { @if (!loading) {<div class="empty">{{ orders.length ? 'Ningún pedido coincide con los filtros.' : 'No hay pedidos.' }}</div>} }
+</div>
+<app-paginator [total]="filtered.length" [page]="page" [pageSize]="pageSize" (pageChange)="page = $event" />

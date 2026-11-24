@@ -1,7 +1,35 @@
-.status.pagado, .status.enviado, .status.entregado { background: #e1f6e8; color: #126b3b; }
-.status.cancelado { background: #ffe7e7; color: #a51f2a; }
 :host { display: block; }
+.progress { display: none; list-style: none; margin: 0 0 14px; padding: 0; gap: 6px; }
+.progress li { flex: 1; text-align: center; font-size: 12px; font-weight: 700; color: var(--muted); padding-top: 12px; position: relative; }
+.progress li::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; border-radius: 4px; background: #d4dff3; }
+.progress li.on { color: var(--navy-800); }
+.progress li.on::before, .progress li.done::before { background: var(--accent); }
+h2 small { font-weight: 500; margin-left: 6px; }
+.blank { text-align: center; padding: 24px 0; color: var(--muted); }
+.btn-p { display: inline-block; padding: 12px 22px; border-radius: 12px; background: linear-gradient(135deg, var(--blue-700), var(--navy-800)); color: #fff; font-weight: 650; text-decoration: none; }
+.link { display: none; background: none; color: var(--blue); padding: 0 0 10px; font-weight: 650; }
+.sticky { display: none; }
+
+/* Pedido listo */
 .done { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 10px; }
-.check { font-size: 46px; }
-.wa-btn { display: inline-flex; align-items: center; gap: 8px; background: #25d366; color: #fff; padding: 14px 22px; border-radius: 12px; font-weight: 700; text-decoration: none; box-shadow: 0 6px 18px rgba(37, 211, 102, .35); }
-.wa-btn:hover { filter: brightness(1.05); }
+.check { width: 64px; height: 64px; border-radius: 50%; display: grid; place-items: center; font-size: 32px; color: #fff; background: var(--green); box-shadow: 0 8px 22px rgba(22, 131, 74, .4); }
+.wa-btn { display: inline-flex; align-items: center; gap: 8px; background: #25d366; color: #fff; padding: 14px 24px; border-radius: 12px; font-weight: 700; text-decoration: none; box-shadow: 0 6px 18px rgba(37, 211, 102, .35); }
+.again { color: var(--blue); font-weight: 650; }
+
+/* Mis pedidos */
+details.ord { border-bottom: 1px solid var(--line); padding: 12px 0; }
+details.ord summary { display: flex; gap: 10px; align-items: center; justify-content: space-between; flex-wrap: wrap; cursor: pointer; list-style: none; }
+details.ord summary::-webkit-details-marker { display: none; }
+details.ord ul { margin: 10px 0 0; padding: 0; list-style: none; color: var(--muted); font-size: 14px; }
+details.ord li { display: flex; justify-content: space-between; gap: 10px; padding: 3px 0; }
+
+@media (max-width: 720px) {
+  :host { padding-bottom: 76px; }
+  .progress { display: flex; }
+  .hide-m { display: none; }
+  .link { display: block; }
+  .sticky { display: flex; position: fixed; left: 0; right: 0; bottom: calc(84px + env(safe-area-inset-bottom)); z-index: 25; align-items: center; justify-content: space-between; gap: 14px; padding: 10px 16px; background: #fff; border-top: 1px solid var(--line); box-shadow: 0 -8px 24px rgba(7, 19, 41, .12); }
+  .sticky .t small { display: block; }
+  .sticky .t b { font: 800 21px 'Space Grotesk', sans-serif; }
+  .sticky .primary { padding: 13px 26px; }
+}

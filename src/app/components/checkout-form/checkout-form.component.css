@@ -1,4 +1,7 @@
 :host { display: block; }
-.pay { display: flex; gap: 12px; align-items: center; background: var(--blue-soft); border: 1px solid #b6ccf0; border-radius: 12px; padding: 12px 14px; margin: 4px 0 12px; }
+.field.invalid input, .field.invalid textarea { border-color: var(--red); background: #fff8f8; }
+.e { color: var(--red); }
+.pay { display: flex; gap: 12px; align-items: center; background: var(--blue-soft); border: 1px solid #bcd0f3; border-radius: 12px; padding: 12px 14px; margin: 4px 0 12px; }
 .pay-ic { font-size: 26px; }
-.pay small { display: block; color: var(--muted); }
+.pay small { display: block; }
+.sumline { display: flex; justify-content: space-between; align-items: center; font-size: 18px; margin: 6px 0 12px; }

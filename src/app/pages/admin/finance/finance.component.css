@@ -1,2 +1,9 @@
 :host { display: block; }
 .acts { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.only-m { display: none; }
+app-search-box { flex: 1; min-width: 200px; max-width: 320px; }
+@media (max-width: 900px) {
+  .only-m { display: block; }
+  .off { display: none; }
+  app-search-box { max-width: none; width: 100%; flex-basis: 100%; }
+}
