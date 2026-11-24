@@ -1,5 +1,5 @@
 <div class="ci">
-  <a class="im" [routerLink]="['/producto', product.id]"><app-product-image [src]="product.image" [alt]="product.name" /></a>
+  <a class="im" [routerLink]="['/producto', product.id]"><app-product-image [src]="product.image" [alt]="product.name" [mark]="false" /></a>
   <div class="mid">
     <a class="nm" [routerLink]="['/producto', product.id]">{{ product.name }}</a>
     <small>{{ product.price | cop }} c/u</small>

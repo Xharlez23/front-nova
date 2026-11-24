@@ -119,3 +119,6 @@ app-product-image, .ph { background: radial-gradient(circle at 50% 30%, #fff 0%,
 .field.invalid input, .field.invalid textarea, .field.invalid select { border-color: var(--red); background: #fff8f8; }
 .e { color: var(--red); font-size: 13px; }
 @media (max-width: 720px) { .app.with-footer { padding-bottom: 14px; } }
+/* Marca de agua: cualquier contenedor con la clase "wm" la muestra sobre su contenido */
+.wm { position: relative; }
+.wm::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: url("/watermark.svg") left 10px bottom 10px / 26% auto no-repeat; opacity: .45; }

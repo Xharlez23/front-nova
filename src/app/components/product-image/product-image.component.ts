@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, HostBinding, Input } from '@angular/core';
 
 @Component({
   selector: 'app-product-image',
@@ -9,4 +9,6 @@ import { Component, Input } from '@angular/core';
 export class ProductImageComponent {
   @Input() src?: string | null;
   @Input() alt = '';
+  @Input() mark = true;
+  @HostBinding('class.wm') get wm() { return this.mark && !!this.src; }
 }

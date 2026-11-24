@@ -58,3 +58,4 @@ h1 { margin: 0; font-size: 30px; line-height: 1.2; overflow-wrap: anywhere; }
   .related::-webkit-scrollbar { display: none; }
   .related app-product-card { flex: 0 0 170px; scroll-snap-align: start; }
 }
+.lbimg { position: relative; line-height: 0; border-radius: 14px; overflow: hidden; }
